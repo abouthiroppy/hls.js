@@ -15,17 +15,17 @@ import { alignDiscontinuities } from '../utils/discontinuities';
 
 
 const State = {
-  STOPPED : 'STOPPED',
-  IDLE : 'IDLE',
-  KEY_LOADING : 'KEY_LOADING',
-  FRAG_LOADING : 'FRAG_LOADING',
-  FRAG_LOADING_WAITING_RETRY : 'FRAG_LOADING_WAITING_RETRY',
-  WAITING_LEVEL : 'WAITING_LEVEL',
-  PARSING : 'PARSING',
-  PARSED : 'PARSED',
-  BUFFER_FLUSHING : 'BUFFER_FLUSHING',
-  ENDED : 'ENDED',
-  ERROR : 'ERROR'
+  STOPPED: 'STOPPED',
+  IDLE: 'IDLE',
+  KEY_LOADING: 'KEY_LOADING',
+  FRAG_LOADING: 'FRAG_LOADING',
+  FRAG_LOADING_WAITING_RETRY: 'FRAG_LOADING_WAITING_RETRY',
+  WAITING_LEVEL: 'WAITING_LEVEL',
+  PARSING: 'PARSING',
+  PARSED: 'PARSED',
+  BUFFER_FLUSHING: 'BUFFER_FLUSHING',
+  ENDED: 'ENDED',
+  ERROR: 'ERROR'
 };
 
 class StreamController extends EventHandler {
@@ -998,13 +998,13 @@ class StreamController extends EventHandler {
         this.state = State.IDLE;
         this.startFragRequested = false;
         stats.tparsed = stats.tbuffered = performance.now();
-        this.hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: fragCurrent, id : 'main' });
+        this.hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: fragCurrent, id: 'main' });
         this.tick();
       } else if (fragLoaded.sn === 'initSegment') {
         this.state = State.IDLE;
         stats.tparsed = stats.tbuffered = performance.now();
         details.initSegment.data = data.payload;
-        this.hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: fragCurrent, id : 'main' });
+        this.hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: fragCurrent, id: 'main' });
         this.tick();
       } else {
         this.state = State.PARSING;
@@ -1106,7 +1106,7 @@ class StreamController extends EventHandler {
           this.appended = true;
           // arm pending Buffering flag before appending a segment
           this.pendingBuffering = true;
-          this.hls.trigger(Event.BUFFER_APPENDING, { type: trackName, data: initSegment, parent : 'main', content : 'initSegment' });
+          this.hls.trigger(Event.BUFFER_APPENDING, { type: trackName, data: initSegment, parent: 'main', content: 'initSegment' });
         }
       }
       //trigger handler right now
@@ -1173,7 +1173,7 @@ class StreamController extends EventHandler {
           this.appended = true;
           // arm pending Buffering flag before appending a segment
           this.pendingBuffering = true;
-          hls.trigger(Event.BUFFER_APPENDING, { type: data.type, data: buffer, parent : 'main',content : 'data' });
+          hls.trigger(Event.BUFFER_APPENDING, { type: data.type, data: buffer, parent: 'main',content: 'data' });
         }
       });
       //trigger handler right now
@@ -1224,8 +1224,8 @@ class StreamController extends EventHandler {
       }
       let hls = this.hls;
       // switching to main audio, flush all audio and trigger track switched
-      hls.trigger(Event.BUFFER_FLUSHING, { startOffset: 0 , endOffset: Number.POSITIVE_INFINITY, type : 'audio' });
-      hls.trigger(Event.AUDIO_TRACK_SWITCHED, { id : trackId });
+      hls.trigger(Event.BUFFER_FLUSHING, { startOffset: 0 , endOffset: Number.POSITIVE_INFINITY, type: 'audio' });
+      hls.trigger(Event.AUDIO_TRACK_SWITCHED, { id: trackId });
       this.altAudio = false;
     }
   }
@@ -1299,7 +1299,7 @@ class StreamController extends EventHandler {
         stats.tbuffered = performance.now();
         // we should get rid of this.fragLastKbps
         this.fragLastKbps = Math.round(8 * stats.total / (stats.tbuffered - stats.tfirst));
-        this.hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: frag, id : 'main' });
+        this.hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: frag, id: 'main' });
         this.state = State.IDLE;
       }
       this.tick();
@@ -1484,7 +1484,7 @@ class StreamController extends EventHandler {
                 if (!this.stallReported) {
                   this.stallReported = true;
                   logger.warn(`playback stalling in low buffer @${currentTime}`);
-                  hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_STALLED_ERROR, fatal: false, buffer : bufferLen });
+                  hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_STALLED_ERROR, fatal: false, buffer: bufferLen });
                 }
                 // if buffer len is below threshold, try to jump to start of next buffer range if close
                 // no buffer available @ currentTime, check if next buffer is close (within a config.maxSeekHole second range)
@@ -1500,14 +1500,14 @@ class StreamController extends EventHandler {
                   media.currentTime = nextBufferStart + nudgeOffset;
                   // reset stalled so to rearm watchdog timer
                   this.stalled = undefined;
-                  hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_SEEK_OVER_HOLE, fatal: false, hole : nextBufferStart + nudgeOffset - currentTime });
+                  hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_SEEK_OVER_HOLE, fatal: false, hole: nextBufferStart + nudgeOffset - currentTime });
                 }
               } else if (bufferLen > jumpThreshold && stalledDuration > config.highBufferWatchdogPeriod * 1000) {
                 // report stalled error once
                 if (!this.stallReported) {
                   this.stallReported = true;
                   logger.warn(`playback stalling in high buffer @${currentTime}`);
-                  hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_STALLED_ERROR, fatal: false, buffer : bufferLen });
+                  hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_STALLED_ERROR, fatal: false, buffer: bufferLen });
                 }
                 // reset stalled so to rearm watchdog timer
                 this.stalled = undefined;

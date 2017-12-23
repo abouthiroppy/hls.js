@@ -33,16 +33,16 @@ class MP4Demuxer {
 
       let tracks = {};
       if(initData.audio && initData.video) {
-        tracks.audiovideo = { container : 'video/mp4', codec : audioCodec + ',' + videoCodec, initSegment : duration ? initSegment : null };
+        tracks.audiovideo = { container: 'video/mp4', codec: audioCodec + ',' + videoCodec, initSegment: duration ? initSegment : null };
       } else {
         if (initData.audio)
-          tracks.audio = { container : 'audio/mp4', codec : audioCodec, initSegment : duration ? initSegment : null };
+          tracks.audio = { container: 'audio/mp4', codec: audioCodec, initSegment: duration ? initSegment : null };
 
         if (initData.video)
-          tracks.video = { container : 'video/mp4', codec : videoCodec, initSegment : duration ? initSegment : null };
+          tracks.video = { container: 'video/mp4', codec: videoCodec, initSegment: duration ? initSegment : null };
 
       }
-      this.observer.trigger(Event.FRAG_PARSING_INIT_SEGMENT,{ tracks : tracks });
+      this.observer.trigger(Event.FRAG_PARSING_INIT_SEGMENT,{ tracks: tracks });
     } else {
       if (audioCodec)
         this.audioCodec = audioCodec;
@@ -55,7 +55,7 @@ class MP4Demuxer {
 
   static probe(data) {
     // ensure we find a moof box in the first 16 kB
-    return MP4Demuxer.findBox( { data : data, start : 0, end : Math.min(data.length, 16384) } ,['moof']).length > 0;
+    return MP4Demuxer.findBox( { data: data, start: 0, end: Math.min(data.length, 16384) } ,['moof']).length > 0;
   }
 
 
@@ -117,10 +117,10 @@ class MP4Demuxer {
         if (path.length === 1) {
           // this is the end of the path and we've found the box we were
           // looking for
-          results.push({ data : data, start : i + 8, end : endbox });
+          results.push({ data: data, start: i + 8, end: endbox });
         } else {
           // recursively search for the next box along the path
-          subresults = MP4Demuxer.findBox({ data : data, start : i +8, end : endbox }, path.slice(1));
+          subresults = MP4Demuxer.findBox({ data: data, start: i +8, end: endbox }, path.slice(1));
           if (subresults.length)
             results = results.concat(subresults);
 
@@ -174,7 +174,7 @@ class MP4Demuxer {
           const hdlr = MP4Demuxer.findBox(trak, ['mdia', 'hdlr'])[0];
           if (hdlr) {
             const hdlrType = MP4Demuxer.bin2str(hdlr.data.subarray(hdlr.start+8, hdlr.start+12));
-            let type = { 'soun' : 'audio', 'vide' : 'video' }[hdlrType];
+            let type = { 'soun': 'audio', 'vide': 'video' }[hdlrType];
             if (type) {
               // extract codec info. TODO : parse codec details to be able to build MIME type
               let codecBox = MP4Demuxer.findBox( trak, ['mdia','minf','stbl','stsd']);
@@ -183,8 +183,8 @@ class MP4Demuxer {
                 let codecType = MP4Demuxer.bin2str(codecBox.data.subarray(codecBox.start+12, codecBox.start+16));
                 logger.log(`MP4Demuxer:${type}:${codecType} found`);
               }
-              result[trackId] = { timescale : timescale , type : type };
-              result[type] = { timescale : timescale , id : trackId };
+              result[trackId] = { timescale: timescale , type: type };
+              result[type] = { timescale: timescale , id: trackId };
             }
           }
         }

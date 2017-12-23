@@ -72,7 +72,7 @@ class Decrypter {
       this.decrypt(data, key, iv, callback);
     } else {
       logger.error(`decrypting error : ${err.message}`);
-      this.observer.trigger(Event.ERROR, { type : ErrorTypes.MEDIA_ERROR, details : ErrorDetails.FRAG_DECRYPT_ERROR, fatal : true, reason : err.message });
+      this.observer.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_DECRYPT_ERROR, fatal: true, reason: err.message });
     }
   }
 

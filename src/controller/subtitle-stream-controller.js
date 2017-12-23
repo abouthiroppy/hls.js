@@ -8,10 +8,10 @@ import { logger } from '../utils/logger';
 import Decrypter from '../crypt/decrypter';
 
 const State = {
-  STOPPED : 'STOPPED',
-  IDLE : 'IDLE',
-  KEY_LOADING : 'KEY_LOADING',
-  FRAG_LOADING : 'FRAG_LOADING'
+  STOPPED: 'STOPPED',
+  IDLE: 'IDLE',
+  KEY_LOADING: 'KEY_LOADING',
+  FRAG_LOADING: 'FRAG_LOADING'
 };
 
 class SubtitleStreamController extends EventHandler {
@@ -201,7 +201,7 @@ class SubtitleStreamController extends EventHandler {
           } catch (error) {
             endTime = Date.now();
           }
-          hls.trigger(Event.FRAG_DECRYPTED, { frag: fragLoaded, payload : decryptedData, stats: { tstart: startTime, tdecrypt: endTime } });
+          hls.trigger(Event.FRAG_DECRYPTED, { frag: fragLoaded, payload: decryptedData, stats: { tstart: startTime, tdecrypt: endTime } });
         });
       }
     }

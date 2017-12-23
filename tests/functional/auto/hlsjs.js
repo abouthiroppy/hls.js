@@ -36,7 +36,7 @@ HttpServer.createServer({
 }).listen(8000, '127.0.0.1');
 
 
-let browserConfig = { version : 'latest' };
+let browserConfig = { version: 'latest' };
 if (onTravis) {
   let UA_VERSION = process.env.UA_VERSION;
   if (UA_VERSION)
@@ -129,7 +129,7 @@ describe('testing hls.js playback in the browser on "'+browserDescription+'"', f
         let callback = arguments[arguments.length - 1];
         startStream(url, callback);
         video.onloadeddata = function() {
-          callback({ code : 'loadeddata', logs : logString });
+          callback({ code: 'loadeddata', logs: logString });
         };
       }, url).then(function(result) {
         assert.strictEqual(result.code, 'loadeddata');
@@ -146,7 +146,7 @@ describe('testing hls.js playback in the browser on "'+browserDescription+'"', f
           switchToHighestLevel('next');
         };
         window.setTimeout(function() {
-          callback({ code : video.readyState, logs : logString });
+          callback({ code: video.readyState, logs: logString });
         }, 12000);
       }, url).then(function(result) {
         assert.strictEqual(result.code, 4);
@@ -163,7 +163,7 @@ describe('testing hls.js playback in the browser on "'+browserDescription+'"', f
           window.setTimeout(function() { video.currentTime = video.duration - 5; }, 5000);
         };
         video.onseeked = function() {
-          callback({ code : 'seeked', logs : logString });
+          callback({ code: 'seeked', logs: logString });
         };
       }, url).then(function(result) {
         assert.strictEqual(result.code, 'seeked');
@@ -180,7 +180,7 @@ describe('testing hls.js playback in the browser on "'+browserDescription+'"', f
           window.setTimeout(function() { video.currentTime = video.duration - 5; }, 5000);
         };
         video.onended = function() {
-          callback({ code : 'ended', logs : logString });
+          callback({ code: 'ended', logs: logString });
         };
       }, url).then(function(result) {
         assert.strictEqual(result.code, 'ended');
@@ -197,7 +197,7 @@ describe('testing hls.js playback in the browser on "'+browserDescription+'"', f
           window.setTimeout(function() { video.currentTime = video.duration; }, 5000);
         };
         video.onended = function() {
-          callback({ code : 'ended', logs : logString });
+          callback({ code: 'ended', logs: logString });
         };
       }, url).then(function(result) {
         assert.strictEqual(result.code, 'ended');

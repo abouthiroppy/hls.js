@@ -32,9 +32,9 @@ export var hlsDefaultConfig = {
   lowBufferWatchdogPeriod: 0.5,           // used by stream-controller
   highBufferWatchdogPeriod: 3,            // used by stream-controller
   nudgeOffset: 0.1,                       // used by stream-controller
-  nudgeMaxRetry : 3,                      // used by stream-controller
+  nudgeMaxRetry: 3,                      // used by stream-controller
   maxFragLookUpTolerance: 0.25,           // used by stream-controller
-  liveSyncDurationCount:3,                // used by stream-controller
+  liveSyncDurationCount: 3,                // used by stream-controller
   liveMaxLatencyDurationCount: Infinity,  // used by stream-controller
   liveSyncDuration: undefined,            // used by stream-controller
   liveMaxLatencyDuration: undefined,      // used by stream-controller
@@ -71,18 +71,18 @@ export var hlsDefaultConfig = {
   capLevelController: CapLevelController,
   fpsController: FPSController,
   stretchShortVideoTrack: false,            // used by mp4-remuxer
-  maxAudioFramesDrift :1,                   // used by mp4-remuxer
+  maxAudioFramesDrift: 1,                   // used by mp4-remuxer
   forceKeyFrameOnDiscontinuity: true,       // used by ts-demuxer
   abrEwmaFastLive: 3,                       // used by abr-controller
   abrEwmaSlowLive: 9,                       // used by abr-controller
   abrEwmaFastVoD: 3,                        // used by abr-controller
   abrEwmaSlowVoD: 9,                        // used by abr-controller
   abrEwmaDefaultEstimate: 5e5, // 500 kbps  // used by abr-controller
-  abrBandWidthFactor : 0.95,                // used by abr-controller
-  abrBandWidthUpFactor : 0.7,               // used by abr-controller
-  abrMaxWithRealBitrate : false,            // used by abr-controller
-  maxStarvationDelay : 4,                   // used by abr-controller
-  maxLoadingDelay : 4,                      // used by abr-controller
+  abrBandWidthFactor: 0.95,                // used by abr-controller
+  abrBandWidthUpFactor: 0.7,               // used by abr-controller
+  abrMaxWithRealBitrate: false,            // used by abr-controller
+  maxStarvationDelay: 4,                   // used by abr-controller
+  maxLoadingDelay: 4,                      // used by abr-controller
   minAutoBitrate: 0                         // used by hls
 };
 

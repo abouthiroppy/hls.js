@@ -32,7 +32,7 @@ class PassThroughRemuxer {
       startDTS: timeOffset,
       type: streamType,
       nb: 1,
-      dropped : 0
+      dropped: 0
     });
     //notify end of parsing
     observer.trigger(Event.FRAG_PARSED);

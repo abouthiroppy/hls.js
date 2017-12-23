@@ -90,12 +90,12 @@ class TSDemuxer {
       container: type === 'video' || type === 'audio' ? 'video/mp2t' : undefined,
       type,
       id: RemuxerTrackIdConfig[type],
-      pid : -1,
-      inputTimeScale : 90000,
+      pid: -1,
+      inputTimeScale: 90000,
       sequenceNumber: 0,
-      samples : [],
-      len : 0,
-      dropped : type === 'video' ? 0 : undefined,
+      samples: [],
+      len: 0,
+      dropped: type === 'video' ? 0 : undefined,
       isAAC: type === 'audio' ? true : undefined,
       duration: type === 'audio' ? duration : undefined
     };
@@ -269,7 +269,7 @@ class TSDemuxer {
           break;
         }
       } else {
-        this.observer.trigger(Event.ERROR, { type : ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_PARSING_ERROR, fatal: false, reason: 'TS packet did not start with 0x47' });
+        this.observer.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_PARSING_ERROR, fatal: false, reason: 'TS packet did not start with 0x47' });
       }
     }
     // try to parse last PES packets
@@ -345,7 +345,7 @@ class TSDemuxer {
   }
 
   _parsePMT(data, offset, mpegSupported, isSampleAes) {
-    let sectionLength, tableEnd, programInfoLength, pid, result = { audio : -1, avc : -1, id3 : -1, isAAC : true };
+    let sectionLength, tableEnd, programInfoLength, pid, result = { audio: -1, avc: -1, id3: -1, isAAC: true };
     sectionLength = (data[offset + 1] & 0x0f) << 8 | data[offset + 2];
     tableEnd = offset + 3 + sectionLength - 4;
     // to determine where the table is, we have to figure out how
@@ -553,7 +553,7 @@ class TSDemuxer {
       i,
       pushAccesUnit = this.pushAccesUnit.bind(this),
       createAVCSample = function(key,pts,dts,debug) {
-        return { key : key, pts : pts, dts : dts, units : [], debug : debug };
+        return { key: key, pts: pts, dts: dts, units: [], debug: debug };
       };
     //free pes.data to save up some memory
     pes.data = null;
@@ -856,7 +856,7 @@ class TSDemuxer {
       }
     }
     if (lastUnitStart >=0 && state >=0) {
-      unit = { data: array.subarray(lastUnitStart, len), type: lastUnitType, state : state };
+      unit = { data: array.subarray(lastUnitStart, len), type: lastUnitType, state: state };
       units.push(unit);
       //logger.log('pushing NALU, type/size/state:' + unit.type + '/' + unit.data.byteLength + '/' + state);
     }

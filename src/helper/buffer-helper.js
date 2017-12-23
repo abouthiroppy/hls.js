@@ -3,7 +3,7 @@
 */
 
 const BufferHelper = {
-  isBuffered : function(media,position) {
+  isBuffered: function(media,position) {
     try {
       if (media) {
         let buffered = media.buffered;
@@ -21,7 +21,7 @@ const BufferHelper = {
     return false;
   },
 
-  bufferInfo : function(media, pos,maxHoleDuration) {
+  bufferInfo: function(media, pos,maxHoleDuration) {
     try {
       if (media) {
         let vbuffered = media.buffered, buffered = [],i;
@@ -35,10 +35,10 @@ const BufferHelper = {
       // InvalidStateError: Failed to read the 'buffered' property from 'SourceBuffer':
       // This SourceBuffer has been removed from the parent media source
     }
-    return { len: 0, start: pos, end: pos, nextStart : undefined } ;
+    return { len: 0, start: pos, end: pos, nextStart: undefined } ;
   },
 
-  bufferedInfo : function(buffered,pos,maxHoleDuration) {
+  bufferedInfo: function(buffered,pos,maxHoleDuration) {
     let buffered2 = [],
       // bufferStart and bufferEnd are buffer boundaries around current video position
       bufferLen,bufferStart, bufferEnd,bufferStartNext,i;
@@ -90,7 +90,7 @@ const BufferHelper = {
         break;
       }
     }
-    return { len: bufferLen, start: bufferStart, end: bufferEnd, nextStart : bufferStartNext };
+    return { len: bufferLen, start: bufferStart, end: bufferEnd, nextStart: bufferStartNext };
   }
 };
 

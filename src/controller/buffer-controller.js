@@ -166,7 +166,7 @@ class BufferController extends EventHandler {
 
   onMediaSourceOpen() {
     logger.log('media source opened');
-    this.hls.trigger(Event.MEDIA_ATTACHED, { media : this.media });
+    this.hls.trigger(Event.MEDIA_ATTACHED, { media: this.media });
     let mediaSource = this.mediaSource;
     if (mediaSource) {
       // once received, don't listen anymore to sourceopen event
@@ -220,7 +220,7 @@ class BufferController extends EventHandler {
     let parent = this.parent;
     // count nb of pending segments waiting for appending on this sourcebuffer
     let pending = this.segments.reduce( (counter, segment) => (segment.parent === parent) ? counter + 1 : counter , 0);
-    this.hls.trigger(Event.BUFFER_APPENDED, { parent : parent, pending : pending });
+    this.hls.trigger(Event.BUFFER_APPENDED, { parent: parent, pending: pending });
 
     // don't append in flushing mode
     if (!this._needsFlush)
@@ -288,11 +288,11 @@ class BufferController extends EventHandler {
           track.buffer = sb;
         } catch(err) {
           logger.error(`error while trying to add sourceBuffer:${err.message}`);
-          this.hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_ADD_CODEC_ERROR, fatal: false, err: err, mimeType : mimeType });
+          this.hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_ADD_CODEC_ERROR, fatal: false, err: err, mimeType: mimeType });
         }
       }
     }
-    this.hls.trigger(Event.BUFFER_CREATED, { tracks : tracks } );
+    this.hls.trigger(Event.BUFFER_CREATED, { tracks: tracks } );
   }
 
   onBufferAppending(data) {
@@ -358,7 +358,7 @@ class BufferController extends EventHandler {
 
 
   onBufferFlushing(data) {
-    this.flushRange.push({ start: data.startOffset, end: data.endOffset, type : data.type });
+    this.flushRange.push({ start: data.startOffset, end: data.endOffset, type: data.type });
     // attempt flush immediately
     this.flushBufferCounter = 0;
     this.doFlush();
@@ -493,7 +493,7 @@ class BufferController extends EventHandler {
           // in case any error occured while appending, put back segment in segments table
           logger.error(`error while trying to append buffer:${err.message}`);
           segments.unshift(segment);
-          let event = { type: ErrorTypes.MEDIA_ERROR, parent : segment.parent };
+          let event = { type: ErrorTypes.MEDIA_ERROR, parent: segment.parent };
           if(err.code !== 22) {
             if (this.appendError)
               this.appendError++;

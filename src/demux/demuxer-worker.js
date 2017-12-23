@@ -20,7 +20,7 @@ let DemuxerWorker = function (self) {
   };
 
   let forwardMessage = function(ev,data) {
-    self.postMessage({ event: ev, data:data });
+    self.postMessage({ event: ev, data: data });
   };
 
   self.addEventListener('message', function (ev) {
@@ -58,7 +58,7 @@ let DemuxerWorker = function (self) {
   // special case for FRAG_PARSING_DATA: pass data1/data2 as transferable object (no copy)
   observer.on(Event.FRAG_PARSING_DATA, function(ev, data) {
     let transferable = [];
-    let message = { event: ev, data:data };
+    let message = { event: ev, data: data };
     if (data.data1) {
       message.data1 = data.data1.buffer;
       transferable.push(data.data1.buffer);

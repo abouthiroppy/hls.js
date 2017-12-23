@@ -61,7 +61,7 @@ class AudioTrackController extends EventHandler {
     let tracks = data.audioTracks || [];
     let defaultFound = false;
     this.tracks = tracks;
-    this.hls.trigger(Event.AUDIO_TRACKS_UPDATED, { audioTracks : tracks });
+    this.hls.trigger(Event.AUDIO_TRACKS_UPDATED, { audioTracks: tracks });
     // loop through available audio tracks and autoselect default if needed
     let id = 0;
     tracks.forEach(track => {
@@ -123,7 +123,7 @@ class AudioTrackController extends EventHandler {
         hls = this.hls,
         type = audioTrack.type,
         url = audioTrack.url,
-        eventObj = { id: newId, type : type, url : url };
+        eventObj = { id: newId, type: type, url: url };
       // keep AUDIO_TRACK_SWITCH for legacy reason
       hls.trigger(Event.AUDIO_TRACK_SWITCH, eventObj);
       hls.trigger(Event.AUDIO_TRACK_SWITCHING, eventObj);

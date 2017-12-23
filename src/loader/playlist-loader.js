@@ -180,19 +180,19 @@ class PlaylistLoader extends EventHandler {
   }
 
   onManifestLoading(data) {
-    this.load(data.url, { type : 'manifest' });
+    this.load(data.url, { type: 'manifest' });
   }
 
   onLevelLoading(data) {
-    this.load(data.url, { type : 'level', level : data.level, id : data.id });
+    this.load(data.url, { type: 'level', level: data.level, id: data.id });
   }
 
   onAudioTrackLoading(data) {
-    this.load(data.url, { type : 'audioTrack', id : data.id });
+    this.load(data.url, { type: 'audioTrack', id: data.id });
   }
 
   onSubtitleTrackLoading(data) {
-    this.load(data.url, { type : 'subtitleTrack', id : data.id });
+    this.load(data.url, { type: 'subtitleTrack', id: data.id });
   }
 
   load(url, context) {
@@ -235,7 +235,7 @@ class PlaylistLoader extends EventHandler {
 
     let loaderConfig, loaderCallbacks;
     loaderConfig = { timeout, maxRetry, retryDelay, maxRetryDelay };
-    loaderCallbacks = { onSuccess : this.loadsuccess.bind(this), onError :this.loaderror.bind(this), onTimeout : this.loadtimeout.bind(this) };
+    loaderCallbacks = { onSuccess: this.loadsuccess.bind(this), onError: this.loaderror.bind(this), onTimeout: this.loadtimeout.bind(this) };
     loader.load(context,loaderConfig,loaderCallbacks);
   }
 
@@ -514,7 +514,7 @@ class PlaylistLoader extends EventHandler {
         levelDetails.tload = stats.tload;
         if (type === 'manifest') {
         // first request, stream manifest (no master playlist), fire manifest loaded event with level details
-          hls.trigger(Event.MANIFEST_LOADED, { levels: [{ url: url, details : levelDetails }], audioTracks : [], url: url, stats: stats, networkDetails: networkDetails });
+          hls.trigger(Event.MANIFEST_LOADED, { levels: [{ url: url, details: levelDetails }], audioTracks: [], url: url, stats: stats, networkDetails: networkDetails });
         }
         stats.tparsed = performance.now();
         if (levelDetails.targetduration) {
@@ -550,7 +550,7 @@ class PlaylistLoader extends EventHandler {
             // this could happen with playlists with alt audio rendition in which quality levels (main) contains both audio+video. but with mixed audio track not signaled
             if (embeddedAudioFound === false && levels[0].audioCodec && !levels[0].attrs.AUDIO) {
               logger.log('audio codec signaled in quality level, but no embedded audio track signaled, create one');
-              audioTracks.unshift({ type : 'main', name : 'main' });
+              audioTracks.unshift({ type: 'main', name: 'main' });
             }
           }
           hls.trigger(Event.MANIFEST_LOADED, { levels, audioTracks, subtitles, url, stats, networkDetails });
@@ -583,7 +583,7 @@ class PlaylistLoader extends EventHandler {
       loader.abort();
       this.loaders[context.type] = undefined;
     }
-    this.hls.trigger(Event.ERROR, { type: ErrorTypes.NETWORK_ERROR, details: details, fatal: fatal, url: loader.url, loader: loader, response: response, context : context, networkDetails: networkDetails });
+    this.hls.trigger(Event.ERROR, { type: ErrorTypes.NETWORK_ERROR, details: details, fatal: fatal, url: loader.url, loader: loader, response: response, context: context, networkDetails: networkDetails });
   }
 
   loadtimeout(stats, context, networkDetails=null) {
@@ -606,7 +606,7 @@ class PlaylistLoader extends EventHandler {
       loader.abort();
       this.loaders[context.type] = undefined;
     }
-    this.hls.trigger(Event.ERROR, { type: ErrorTypes.NETWORK_ERROR, details: details, fatal: fatal, url: loader.url, loader: loader, context : context, networkDetails: networkDetails });
+    this.hls.trigger(Event.ERROR, { type: ErrorTypes.NETWORK_ERROR, details: details, fatal: fatal, url: loader.url, loader: loader, context: context, networkDetails: networkDetails });
   }
 }
 

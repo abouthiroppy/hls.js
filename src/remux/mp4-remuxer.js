@@ -106,7 +106,7 @@ class MP4Remuxer {
       typeSupported = this.typeSupported,
       container = 'audio/mp4',
       tracks = {},
-      data = { tracks : tracks },
+      data = { tracks: tracks },
       computePTSDTS = (this._initPTS === undefined),
       initPTS, initDTS;
 
@@ -129,11 +129,11 @@ class MP4Remuxer {
         }
       }
       tracks.audio = {
-        container : container,
-        codec :  audioTrack.codec,
-        initSegment : !audioTrack.isAAC && typeSupported.mpeg ? new Uint8Array() : MP4.initSegment([audioTrack]),
-        metadata : {
-          channelCount : audioTrack.channelCount
+        container: container,
+        codec: audioTrack.codec,
+        initSegment: !audioTrack.isAAC && typeSupported.mpeg ? new Uint8Array() : MP4.initSegment([audioTrack]),
+        metadata: {
+          channelCount: audioTrack.channelCount
         }
       };
       if (computePTSDTS) {
@@ -148,12 +148,12 @@ class MP4Remuxer {
       const inputTimeScale = videoTrack.inputTimeScale;
       videoTrack.timescale = inputTimeScale;
       tracks.video = {
-        container : 'video/mp4',
-        codec :  videoTrack.codec,
-        initSegment : MP4.initSegment([videoTrack]),
-        metadata : {
-          width : videoTrack.width,
-          height : videoTrack.height
+        container: 'video/mp4',
+        codec: videoTrack.codec,
+        initSegment: MP4.initSegment([videoTrack]),
+        metadata: {
+          width: videoTrack.width,
+          height: videoTrack.height
         }
       };
       if (computePTSDTS) {
@@ -171,7 +171,7 @@ class MP4Remuxer {
         this._initDTS = initDTS;
       }
     } else {
-      observer.trigger(Event.ERROR, { type : ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_PARSING_ERROR, fatal: false, reason: 'no audio/video samples found' });
+      observer.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_PARSING_ERROR, fatal: false, reason: 'no audio/video samples found' });
     }
   }
 
@@ -315,7 +315,7 @@ class MP4Remuxer {
     try {
       mdat = new Uint8Array(mdatSize);
     } catch(err) {
-      this.observer.trigger(Event.ERROR, { type : ErrorTypes.MUX_ERROR, details: ErrorDetails.REMUX_ALLOC_ERROR, fatal: false, bytes : mdatSize, reason: `fail allocating video mdat ${mdatSize}` });
+      this.observer.trigger(Event.ERROR, { type: ErrorTypes.MUX_ERROR, details: ErrorDetails.REMUX_ALLOC_ERROR, fatal: false, bytes: mdatSize, reason: `fail allocating video mdat ${mdatSize}` });
       return;
     }
     let view = new DataView(mdat.buffer);
@@ -388,8 +388,8 @@ class MP4Remuxer {
           isDependedOn: 0,
           hasRedundancy: 0,
           degradPrio: 0,
-          dependsOn : avcSample.key ? 2 : 1,
-          isNonSync : avcSample.key ? 0 : 1
+          dependsOn: avcSample.key ? 2 : 1,
+          isNonSync: avcSample.key ? 0 : 1
         }
       });
     }
@@ -419,7 +419,7 @@ class MP4Remuxer {
       endDTS: this.nextAvcDts / timeScale,
       type: 'video',
       nb: outputSamples.length,
-      dropped : dropped
+      dropped: dropped
     };
     this.observer.trigger(Event.FRAG_PARSING_DATA, data);
     return data;
@@ -594,7 +594,7 @@ class MP4Remuxer {
           try {
             mdat = new Uint8Array(mdatSize);
           } catch(err) {
-            this.observer.trigger(Event.ERROR, { type : ErrorTypes.MUX_ERROR, details: ErrorDetails.REMUX_ALLOC_ERROR, fatal: false, bytes : mdatSize, reason: `fail allocating audio mdat ${mdatSize}` });
+            this.observer.trigger(Event.ERROR, { type: ErrorTypes.MUX_ERROR, details: ErrorDetails.REMUX_ALLOC_ERROR, fatal: false, bytes: mdatSize, reason: `fail allocating audio mdat ${mdatSize}` });
             return;
           }
           if (!rawMPEG) {
@@ -737,7 +737,7 @@ class MP4Remuxer {
         sample.dts = ((sample.dts - initDTS) / inputTimeScale);
       }
       this.observer.trigger(Event.FRAG_PARSING_METADATA, {
-        samples:track.samples
+        samples: track.samples
       });
     }
 
@@ -762,7 +762,7 @@ class MP4Remuxer {
         sample.pts = ((sample.pts - initPTS) / inputTimeScale);
       }
       this.observer.trigger(Event.FRAG_PARSING_USERDATA, {
-        samples:track.samples
+        samples: track.samples
       });
     }
 

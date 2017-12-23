@@ -73,12 +73,12 @@ describe('level-helper', function () {
 
   it ('adjusts level fragments without overlapping CC range but with programDateTime info', function () {
 
-    const lastFrag = { cc : 0 };
+    const lastFrag = { cc: 0 };
     const lastLevel = {
-      details : {
-        PTSKnown : true,
-        programDateTime : new Date('2017-08-28 00:00:00'),
-        fragments : [
+      details: {
+        PTSKnown: true,
+        programDateTime: new Date('2017-08-28 00:00:00'),
+        fragments: [
           {
             start: 20,
             startPTS: 20,
@@ -129,13 +129,13 @@ describe('level-helper', function () {
         }
       ],
       PTSKnown: false,
-      programDateTime : new Date('2017-08-28 00:00:50'),
-      startCC : 2,
-      endCC : 3
+      programDateTime: new Date('2017-08-28 00:00:50'),
+      startCC: 2,
+      endCC: 3
     };
 
     let detailsExpected = {
-      fragments : [
+      fragments: [
         {
           start: 70,
           startPTS: 70,
@@ -159,9 +159,9 @@ describe('level-helper', function () {
         }
       ],
       PTSKnown: true,
-      programDateTime : new Date('2017-08-28 00:00:50'),
-      startCC : 2,
-      endCC : 3
+      programDateTime: new Date('2017-08-28 00:00:50'),
+      startCC: 2,
+      endCC: 3
     };
     alignDiscontinuities(lastFrag,lastLevel,details);
     assert.deepEqual(detailsExpected,details);

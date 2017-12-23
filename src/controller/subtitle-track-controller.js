@@ -101,7 +101,7 @@ class SubtitleTrackController extends EventHandler {
     let tracks = data.subtitles || [];
     this.tracks = tracks;
     this.trackId = -1;
-    this.hls.trigger(Event.SUBTITLE_TRACKS_UPDATED, { subtitleTracks : tracks });
+    this.hls.trigger(Event.SUBTITLE_TRACKS_UPDATED, { subtitleTracks: tracks });
 
     // loop through available subtitle tracks and autoselect default if needed
     // TODO: improve selection logic to handle forced, etc
