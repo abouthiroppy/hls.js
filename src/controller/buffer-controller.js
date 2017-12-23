@@ -38,8 +38,10 @@ class BufferController extends EventHandler {
     // Source Buffer listeners
     this.onsbue = this.onSBUpdateEnd.bind(this);
     this.onsbe  = this.onSBUpdateError.bind(this);
-    this.pendingTracks = {};
-    this.tracks = {};
+    this.pendingTracks = {
+    };
+    this.tracks = {
+    };
   }
 
   destroy() {
@@ -153,9 +155,12 @@ class BufferController extends EventHandler {
       this.mediaSource = null;
       this.media = null;
       this._objectUrl = null;
-      this.pendingTracks = {};
-      this.tracks = {};
-      this.sourceBuffer = {};
+      this.pendingTracks = {
+      };
+      this.tracks = {
+      };
+      this.sourceBuffer = {
+      };
       this.flushRange = [];
       this.segments = [];
       this.appended = 0;
@@ -166,7 +171,9 @@ class BufferController extends EventHandler {
 
   onMediaSourceOpen() {
     logger.log('media source opened');
-    this.hls.trigger(Event.MEDIA_ATTACHED, { media: this.media });
+    this.hls.trigger(Event.MEDIA_ATTACHED, {
+      media: this.media
+    });
     let mediaSource = this.mediaSource;
     if (mediaSource) {
       // once received, don't listen anymore to sourceopen event
@@ -185,7 +192,8 @@ class BufferController extends EventHandler {
         this.sourceBufferNb === 0)) {
       // ok, let's create them now !
       this.createSourceBuffers(pendingTracks);
-      this.pendingTracks = {};
+      this.pendingTracks = {
+      };
       // append any pending segments now !
       this.doAppending();
     }
@@ -220,7 +228,10 @@ class BufferController extends EventHandler {
     let parent = this.parent;
     // count nb of pending segments waiting for appending on this sourcebuffer
     let pending = this.segments.reduce( (counter, segment) => (segment.parent === parent) ? counter + 1 : counter, 0);
-    this.hls.trigger(Event.BUFFER_APPENDED, { parent: parent, pending: pending });
+    this.hls.trigger(Event.BUFFER_APPENDED, {
+      parent : parent,
+      pending: pending
+    });
 
     // don't append in flushing mode
     if (!this._needsFlush)
@@ -235,7 +246,11 @@ class BufferController extends EventHandler {
     // according to http://www.w3.org/TR/media-source/#sourcebuffer-append-error
     // this error might not always be fatal (it is fatal if decode error is set, in that case
     // it will be followed by a mediaElement error ...)
-    this.hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_APPENDING_ERROR, fatal: false });
+    this.hls.trigger(Event.ERROR, {
+      type   : ErrorTypes.MEDIA_ERROR,
+      details: ErrorDetails.BUFFER_APPENDING_ERROR,
+      fatal  : false
+    });
     // we don't need to do more than that, as accordin to the spec, updateend will be fired just after
   }
 
@@ -250,7 +265,8 @@ class BufferController extends EventHandler {
       } catch(err) {
       }
     }
-    this.sourceBuffer = {};
+    this.sourceBuffer = {
+    };
     this.flushRange = [];
     this.segments = [];
     this.appended = 0;
@@ -284,15 +300,26 @@ class BufferController extends EventHandler {
           let sb = sourceBuffer[trackName] = mediaSource.addSourceBuffer(mimeType);
           sb.addEventListener('updateend', this.onsbue);
           sb.addEventListener('error', this.onsbe);
-          this.tracks[trackName] = { codec: codec, container: track.container };
+          this.tracks[trackName] = {
+            codec    : codec,
+            container: track.container
+          };
           track.buffer = sb;
         } catch(err) {
           logger.error(`error while trying to add sourceBuffer:${err.message}`);
-          this.hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_ADD_CODEC_ERROR, fatal: false, err: err, mimeType: mimeType });
+          this.hls.trigger(Event.ERROR, {
+            type    : ErrorTypes.MEDIA_ERROR,
+            details : ErrorDetails.BUFFER_ADD_CODEC_ERROR,
+            fatal   : false,
+            err     : err,
+            mimeType: mimeType
+          });
         }
       }
     }
-    this.hls.trigger(Event.BUFFER_CREATED, { tracks: tracks } );
+    this.hls.trigger(Event.BUFFER_CREATED, {
+      tracks: tracks
+    } );
   }
 
   onBufferAppending(data) {
@@ -311,7 +338,11 @@ class BufferController extends EventHandler {
     // according to http://www.w3.org/TR/media-source/#sourcebuffer-append-error
     // this error might not always be fatal (it is fatal if decode error is set, in that case
     // it will be followed by a mediaElement error ...)
-    this.hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.BUFFER_APPENDING_ERROR, fatal: false });
+    this.hls.trigger(Event.ERROR, {
+      type   : ErrorTypes.MEDIA_ERROR,
+      details: ErrorDetails.BUFFER_APPENDING_ERROR,
+      fatal  : false
+    });
   }
 
   // on BUFFER_EOS mark matching sourcebuffer(s) as ended and trigger checkEos()
@@ -358,7 +389,11 @@ class BufferController extends EventHandler {
 
 
   onBufferFlushing(data) {
-    this.flushRange.push({ start: data.startOffset, end: data.endOffset, type: data.type });
+    this.flushRange.push({
+      start: data.startOffset,
+      end  : data.endOffset,
+      type : data.type
+    });
     // attempt flush immediately
     this.flushBufferCounter = 0;
     this.doFlush();
@@ -493,7 +528,10 @@ class BufferController extends EventHandler {
           // in case any error occured while appending, put back segment in segments table
           logger.error(`error while trying to append buffer:${err.message}`);
           segments.unshift(segment);
-          let event = { type: ErrorTypes.MEDIA_ERROR, parent: segment.parent };
+          let event = {
+            type  : ErrorTypes.MEDIA_ERROR,
+            parent: segment.parent
+          };
           if(err.code !== 22) {
             if (this.appendError)
               this.appendError++;

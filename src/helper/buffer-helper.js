@@ -25,8 +25,12 @@ const BufferHelper = {
     try {
       if (media) {
         let vbuffered = media.buffered, buffered = [], i;
-        for (i = 0; i < vbuffered.length; i++)
-          buffered.push({ start: vbuffered.start(i), end: vbuffered.end(i) });
+        for (i = 0; i < vbuffered.length; i++) {
+          buffered.push({
+            start: vbuffered.start(i),
+            end  : vbuffered.end(i)
+          });
+        }
 
         return this.bufferedInfo(buffered, pos, maxHoleDuration);
       }
@@ -35,7 +39,12 @@ const BufferHelper = {
       // InvalidStateError: Failed to read the 'buffered' property from 'SourceBuffer':
       // This SourceBuffer has been removed from the parent media source
     }
-    return { len: 0, start: pos, end: pos, nextStart: undefined } ;
+    return {
+      len      : 0,
+      start    : pos,
+      end      : pos,
+      nextStart: undefined
+    } ;
   },
 
   bufferedInfo: function(buffered, pos, maxHoleDuration) {
@@ -90,7 +99,12 @@ const BufferHelper = {
         break;
       }
     }
-    return { len: bufferLen, start: bufferStart, end: bufferEnd, nextStart: bufferStartNext };
+    return {
+      len      : bufferLen,
+      start    : bufferStart,
+      end      : bufferEnd,
+      nextStart: bufferStartNext
+    };
   }
 };
 

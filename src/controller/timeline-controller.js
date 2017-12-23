@@ -165,7 +165,10 @@ class TimelineController extends EventHandler {
   onManifestLoading() {
     this.lastSn = -1; // Detect discontiguity in fragment parsing
     this.prevCC = -1;
-    this.vttCCs = { ccOffset: 0, presentationOffset: 0 }; // Detect discontinuity in subtitle manifests
+    this.vttCCs = {
+      ccOffset          : 0,
+      presentationOffset: 0
+    }; // Detect discontinuity in subtitle manifests
     this._cleanTracks();
 
   }
@@ -245,7 +248,10 @@ class TimelineController extends EventHandler {
 
       } else {
         // In case there is no payload, finish unsuccessfully.
-        this.hls.trigger(Event.SUBTITLE_FRAG_PROCESSED, { success: false, frag: frag });
+        this.hls.trigger(Event.SUBTITLE_FRAG_PROCESSED, {
+          success: false,
+          frag   : frag
+        });
       }
     }
   }
@@ -253,7 +259,11 @@ class TimelineController extends EventHandler {
   _parseVTTs(frag, payload) {
     let vttCCs = this.vttCCs;
     if (!vttCCs[frag.cc]) {
-      vttCCs[frag.cc] = { start: frag.start, prevCC: this.prevCC, new: true };
+      vttCCs[frag.cc] = {
+        start : frag.start,
+        prevCC: this.prevCC,
+        new   : true
+      };
       this.prevCC = frag.cc;
     }
     let textTracks = this.textTracks,
@@ -277,12 +287,18 @@ class TimelineController extends EventHandler {
           }
         }
       });
-      hls.trigger(Event.SUBTITLE_FRAG_PROCESSED, { success: true, frag: frag });
+      hls.trigger(Event.SUBTITLE_FRAG_PROCESSED, {
+        success: true,
+        frag   : frag
+      });
     },
     function (e) {
       // Something went wrong while parsing. Trigger event with success false.
       logger.log(`Failed to parse VTT cue: ${e}`);
-      hls.trigger(Event.SUBTITLE_FRAG_PROCESSED, { success: false, frag: frag });
+      hls.trigger(Event.SUBTITLE_FRAG_PROCESSED, {
+        success: false,
+        frag   : frag
+      });
     });
   }
 

@@ -14,7 +14,18 @@ class MP3Demuxer {
   }
 
   resetInitSegment(initSegment, audioCodec, videoCodec, duration) {
-    this._audioTrack = { container: 'audio/mpeg', type: 'audio', id: -1, sequenceNumber: 0, isAAC: false, samples: [], len: 0, manifestCodec: audioCodec, duration: duration, inputTimeScale: 90000 };
+    this._audioTrack = {
+      container     : 'audio/mpeg',
+      type          : 'audio',
+      id            : -1,
+      sequenceNumber: 0,
+      isAAC         : false,
+      samples       : [],
+      len           : 0,
+      manifestCodec : audioCodec,
+      duration      : duration,
+      inputTimeScale: 90000
+    };
   }
 
   resetTimeStamp() {
@@ -48,7 +59,11 @@ class MP3Demuxer {
     let frameIndex = 0, stamp = 0;
     let track = this._audioTrack;
 
-    let id3Samples = [{ pts: pts, dts: pts, data: id3Data }];
+    let id3Samples = [{
+      pts : pts,
+      dts : pts,
+      data: id3Data
+    }];
 
     while (offset < length) {
       if (MpegAudio.isHeader(data, offset)) {
@@ -63,7 +78,11 @@ class MP3Demuxer {
         }
       } else if (ID3.isHeader(data, offset)) {
         id3Data = ID3.getID3Data(data, offset);
-        id3Samples.push({ pts: stamp, dts: stamp, data: id3Data });
+        id3Samples.push({
+          pts : stamp,
+          dts : stamp,
+          data: id3Data
+        });
         offset += id3Data.length;
       } else {
         //nothing found, keep looking
@@ -72,9 +91,16 @@ class MP3Demuxer {
     }
 
     this.remuxer.remux(track,
-      { samples: [] },
-      { samples: id3Samples, inputTimeScale: 90000 },
-      { samples: [] },
+      {
+        samples: []
+      },
+      {
+        samples       : id3Samples,
+        inputTimeScale: 90000
+      },
+      {
+        samples: []
+      },
       timeOffset,
       contiguous,
       accurateTimeOffset);

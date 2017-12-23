@@ -187,7 +187,10 @@ class TSDemuxer {
             if (avcData && (pes = parsePES(avcData)))
               parseAVCPES(pes, false);
 
-            avcData = { data: [], size: 0 };
+            avcData = {
+              data: [],
+              size: 0
+            };
           }
           if (avcData) {
             avcData.data.push(data.subarray(offset, start + 188));
@@ -203,7 +206,10 @@ class TSDemuxer {
                 parseMPEGPES(pes);
 
             }
-            audioData = { data: [], size: 0 };
+            audioData = {
+              data: [],
+              size: 0
+            };
           }
           if (audioData) {
             audioData.data.push(data.subarray(offset, start + 188));
@@ -215,7 +221,10 @@ class TSDemuxer {
             if (id3Data && (pes = parsePES(id3Data)))
               parseID3PES(pes);
 
-            id3Data = { data: [], size: 0 };
+            id3Data = {
+              data: [],
+              size: 0
+            };
           }
           if (id3Data) {
             id3Data.data.push(data.subarray(offset, start + 188));
@@ -269,7 +278,12 @@ class TSDemuxer {
           break;
         }
       } else {
-        this.observer.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_PARSING_ERROR, fatal: false, reason: 'TS packet did not start with 0x47' });
+        this.observer.trigger(Event.ERROR, {
+          type   : ErrorTypes.MEDIA_ERROR,
+          details: ErrorDetails.FRAG_PARSING_ERROR,
+          fatal  : false,
+          reason : 'TS packet did not start with 0x47'
+        });
       }
     }
     // try to parse last PES packets
@@ -345,7 +359,12 @@ class TSDemuxer {
   }
 
   _parsePMT(data, offset, mpegSupported, isSampleAes) {
-    let sectionLength, tableEnd, programInfoLength, pid, result = { audio: -1, avc: -1, id3: -1, isAAC: true };
+    let sectionLength, tableEnd, programInfoLength, pid, result = {
+      audio: -1,
+      avc  : -1,
+      id3  : -1,
+      isAAC: true
+    };
     sectionLength = (data[offset + 1] & 0x0f) << 8 | data[offset + 2];
     tableEnd = offset + 3 + sectionLength - 4;
     // to determine where the table is, we have to figure out how
@@ -512,7 +531,12 @@ class TSDemuxer {
         // payload size : remove PES header + PES extension
         pesLen -= pesHdrLen+3;
       }
-      return { data: pesData, pts: pesPts, dts: pesDts, len: pesLen };
+      return {
+        data: pesData,
+        pts : pesPts,
+        dts : pesDts,
+        len : pesLen
+      };
     } else {
       return null;
     }
@@ -553,7 +577,13 @@ class TSDemuxer {
       i,
       pushAccesUnit = this.pushAccesUnit.bind(this),
       createAVCSample = function(key, pts, dts, debug) {
-        return { key: key, pts: pts, dts: dts, units: [], debug: debug };
+        return {
+          key  : key,
+          pts  : pts,
+          dts  : dts,
+          units: [],
+          debug: debug
+        };
       };
     //free pes.data to save up some memory
     pes.data = null;
@@ -667,7 +697,11 @@ class TSDemuxer {
                       byteArray.push(expGolombDecoder.readUByte());
                     }
 
-                    this._insertSampleInOrder(this._txtTrack.samples, { type: 3, pts: pes.pts, bytes: byteArray });
+                    this._insertSampleInOrder(this._txtTrack.samples, {
+                      type : 3,
+                      pts  : pes.pts,
+                      bytes: byteArray
+                    });
                   }
                 }
               }
@@ -810,7 +844,10 @@ class TSDemuxer {
         state = 3;
       } else if (value === 1) {
         if (lastUnitStart >=0) {
-          unit = { data: array.subarray(lastUnitStart, i - state - 1), type: lastUnitType };
+          unit = {
+            data: array.subarray(lastUnitStart, i - state - 1),
+            type: lastUnitType
+          };
           //logger.log('pushing NALU, type/size:' + unit.type + '/' + unit.data.byteLength);
           units.push(unit);
         } else {
@@ -856,7 +893,11 @@ class TSDemuxer {
       }
     }
     if (lastUnitStart >=0 && state >=0) {
-      unit = { data: array.subarray(lastUnitStart, len), type: lastUnitType, state: state };
+      unit = {
+        data : array.subarray(lastUnitStart, len),
+        type : lastUnitType,
+        state: state
+      };
       units.push(unit);
       //logger.log('pushing NALU, type/size/state:' + unit.type + '/' + unit.data.byteLength + '/' + state);
     }
@@ -951,7 +992,12 @@ class TSDemuxer {
         fatal = true;
       }
       logger.warn(`parsing error:${reason}`);
-      this.observer.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_PARSING_ERROR, fatal: fatal, reason: reason });
+      this.observer.trigger(Event.ERROR, {
+        type   : ErrorTypes.MEDIA_ERROR,
+        details: ErrorDetails.FRAG_PARSING_ERROR,
+        fatal  : fatal,
+        reason : reason
+      });
       if (fatal)
         return;
 

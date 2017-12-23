@@ -221,7 +221,9 @@ class AudioStreamController extends EventHandler {
           // between different renditions. using half frag duration should help cope with these cases.
           if (!this.media.seeking || (this.media.duration-bufferEnd) < fragPrevious.duration/2) {
             // Finalize the media stream
-            this.hls.trigger(Event.BUFFER_EOS, { type: 'audio' });
+            this.hls.trigger(Event.BUFFER_EOS, {
+              type: 'audio'
+            });
             this.state = State.ENDED;
             break;
           }
@@ -333,7 +335,9 @@ class AudioStreamController extends EventHandler {
           if (frag.decryptdata && (frag.decryptdata.uri != null) && (frag.decryptdata.key == null)) {
             logger.log(`Loading key for ${frag.sn} of [${trackDetails.startSN} ,${trackDetails.endSN}],track ${trackId}`);
             this.state = State.KEY_LOADING;
-            hls.trigger(Event.KEY_LOADING, { frag: frag });
+            hls.trigger(Event.KEY_LOADING, {
+              frag: frag
+            });
           } else {
             logger.log(`Loading ${frag.sn}, cc: ${frag.cc} of [${trackDetails.startSN} ,${trackDetails.endSN}],track ${trackId}, currentTime:${pos},bufferEnd:${bufferEnd.toFixed(3)}`);
             // ensure that we are not reloading the same fragments in loop ...
@@ -347,7 +351,12 @@ class AudioStreamController extends EventHandler {
               let maxThreshold = config.fragLoadingLoopThreshold;
               // if this frag has already been loaded 3 times, and if it has been reloaded recently
               if (frag.loadCounter > maxThreshold && (Math.abs(this.fragLoadIdx - frag.loadIdx) < maxThreshold)) {
-                hls.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_LOOP_LOADING_ERROR, fatal: false, frag: frag });
+                hls.trigger(Event.ERROR, {
+                  type   : ErrorTypes.MEDIA_ERROR,
+                  details: ErrorDetails.FRAG_LOOP_LOADING_ERROR,
+                  fatal  : false,
+                  frag   : frag
+                });
                 return;
               }
             } else {
@@ -359,7 +368,9 @@ class AudioStreamController extends EventHandler {
             if (!isNaN(frag.sn))
               this.nextLoadPosition = frag.start + frag.duration;
 
-            hls.trigger(Event.FRAG_LOADING, { frag: frag });
+            hls.trigger(Event.FRAG_LOADING, {
+              frag: frag
+            });
             this.state = State.FRAG_LOADING;
           }
         }
@@ -606,7 +617,11 @@ class AudioStreamController extends EventHandler {
 
         stats.tparsed = stats.tbuffered = performance.now();
         details.initSegment.data = data.payload;
-        this.hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: fragCurrent, id: 'audio' });
+        this.hls.trigger(Event.FRAG_BUFFERED, {
+          stats: stats,
+          frag : fragCurrent,
+          id   : 'audio'
+        });
         this.tick();
       } else {
         this.state = State.PARSING;
@@ -659,7 +674,12 @@ class AudioStreamController extends EventHandler {
         logger.log(`audio track:audio,container:${track.container},codecs[level/parsed]=[${track.levelCodec}/${track.codec}]`);
         let initSegment = track.initSegment;
         if (initSegment) {
-          let appendObj = { type: 'audio', data: initSegment, parent: 'audio', content: 'initSegment' };
+          let appendObj = {
+            type   : 'audio',
+            data   : initSegment,
+            parent : 'audio',
+            content: 'initSegment'
+          };
           if (this.audioSwitch) {
             this.pendingData = [appendObj];
           } else {
@@ -705,16 +725,24 @@ class AudioStreamController extends EventHandler {
           if (currentTime >= data.startPTS) {
             logger.log('switching audio track : flushing all audio');
             this.state = State.BUFFER_FLUSHING;
-            hls.trigger(Event.BUFFER_FLUSHING, { startOffset: 0, endOffset: Number.POSITIVE_INFINITY, type: 'audio' });
+            hls.trigger(Event.BUFFER_FLUSHING, {
+              startOffset: 0,
+              endOffset  : Number.POSITIVE_INFINITY,
+              type       : 'audio'
+            });
             appendOnBufferFlush = true;
             //Lets announce that the initial audio track switch flush occur
             this.audioSwitch = false;
-            hls.trigger(Event.AUDIO_TRACK_SWITCHED, { id: trackId });
+            hls.trigger(Event.AUDIO_TRACK_SWITCHED, {
+              id: trackId
+            });
           }
         } else {
           //Lets announce that the initial audio track switch flush occur
           this.audioSwitch=false;
-          hls.trigger(Event.AUDIO_TRACK_SWITCHED, { id: trackId });
+          hls.trigger(Event.AUDIO_TRACK_SWITCHED, {
+            id: trackId
+          });
         }
       }
 
@@ -722,8 +750,14 @@ class AudioStreamController extends EventHandler {
       let pendingData = this.pendingData;
       if(!this.audioSwitch) {
         [data.data1, data.data2].forEach(buffer => {
-          if (buffer && buffer.length)
-            pendingData.push({ type: data.type, data: buffer, parent: 'audio', content: 'data' });
+          if (buffer && buffer.length) {
+            pendingData.push({
+              type   : data.type,
+              data   : buffer,
+              parent : 'audio',
+              content: 'data'
+            });
+          }
 
         });
         if (!appendOnBufferFlush && pendingData.length) {
@@ -794,12 +828,18 @@ class AudioStreamController extends EventHandler {
       if (frag) {
         this.fragPrevious = frag;
         stats.tbuffered = performance.now();
-        hls.trigger(Event.FRAG_BUFFERED, { stats: stats, frag: frag, id: 'audio' });
+        hls.trigger(Event.FRAG_BUFFERED, {
+          stats: stats,
+          frag : frag,
+          id   : 'audio'
+        });
         let media = this.mediaBuffer ? this.mediaBuffer : this.media;
         logger.log(`audio buffered : ${TimeRanges.toString(media.buffered)}`);
         if (this.audioSwitch && this.appended) {
           this.audioSwitch = false;
-          hls.trigger(Event.AUDIO_TRACK_SWITCHED, { id: this.trackId });
+          hls.trigger(Event.AUDIO_TRACK_SWITCHED, {
+            id: this.trackId
+          });
         }
         this.state = State.IDLE;
       }
@@ -879,7 +919,11 @@ class AudioStreamController extends EventHandler {
           this.fragCurrent = null;
           // flush everything
           this.state = State.BUFFER_FLUSHING;
-          this.hls.trigger(Event.BUFFER_FLUSHING, { startOffset: 0, endOffset: Number.POSITIVE_INFINITY, type: 'audio' });
+          this.hls.trigger(Event.BUFFER_FLUSHING, {
+            startOffset: 0,
+            endOffset  : Number.POSITIVE_INFINITY,
+            type       : 'audio'
+          });
         }
       }
       break;

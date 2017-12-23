@@ -122,7 +122,10 @@ class AbrController extends EventHandler {
             loader.abort();
             // stop abandon rules timer
             this.clearTimer();
-            hls.trigger(Event.FRAG_LOAD_EMERGENCY_ABORTED, { frag: frag, stats: stats });
+            hls.trigger(Event.FRAG_LOAD_EMERGENCY_ABORTED, {
+              frag : frag,
+              stats: stats
+            });
           }
         }
       }
@@ -144,7 +147,10 @@ class AbrController extends EventHandler {
         const level = this.hls.levels[frag.level];
         let loadedBytes = (level.loaded ? level.loaded.bytes : 0) + data.stats.loaded;
         let loadedDuration = (level.loaded ? level.loaded.duration : 0) + data.frag.duration;
-        level.loaded = { bytes: loadedBytes, duration: loadedDuration };
+        level.loaded = {
+          bytes   : loadedBytes,
+          duration: loadedDuration
+        };
         level.realBitrate = Math.round(8*loadedBytes/loadedDuration);
       }
       // if fragment has been loaded to perform a bitrate test,

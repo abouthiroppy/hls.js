@@ -69,7 +69,8 @@ export default (function() {
 
       return (/MSIE\s8\.0/).test(navigator.userAgent);
     })();
-    let baseObj = {};
+    let baseObj = {
+    };
 
     if (isIE8)
       cue = document.createElement('custom');
@@ -107,7 +108,8 @@ export default (function() {
     let _size = 50;
     let _align = 'middle';
 
-    Object.defineProperty(cue, 'id', extend({}, baseObj, {
+    Object.defineProperty(cue, 'id', extend({
+    }, baseObj, {
       get: function () {
         return _id;
       },
@@ -116,7 +118,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'pauseOnExit', extend({}, baseObj, {
+    Object.defineProperty(cue, 'pauseOnExit', extend({
+    }, baseObj, {
       get: function () {
         return _pauseOnExit;
       },
@@ -125,7 +128,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'startTime', extend({}, baseObj, {
+    Object.defineProperty(cue, 'startTime', extend({
+    }, baseObj, {
       get: function () {
         return _startTime;
       },
@@ -138,7 +142,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'endTime', extend({}, baseObj, {
+    Object.defineProperty(cue, 'endTime', extend({
+    }, baseObj, {
       get: function () {
         return _endTime;
       },
@@ -151,7 +156,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'text', extend({}, baseObj, {
+    Object.defineProperty(cue, 'text', extend({
+    }, baseObj, {
       get: function () {
         return _text;
       },
@@ -161,7 +167,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'region', extend({}, baseObj, {
+    Object.defineProperty(cue, 'region', extend({
+    }, baseObj, {
       get: function () {
         return _region;
       },
@@ -171,7 +178,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'vertical', extend({}, baseObj, {
+    Object.defineProperty(cue, 'vertical', extend({
+    }, baseObj, {
       get: function () {
         return _vertical;
       },
@@ -186,7 +194,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'snapToLines', extend({}, baseObj, {
+    Object.defineProperty(cue, 'snapToLines', extend({
+    }, baseObj, {
       get: function () {
         return _snapToLines;
       },
@@ -196,7 +205,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'line', extend({}, baseObj, {
+    Object.defineProperty(cue, 'line', extend({
+    }, baseObj, {
       get: function () {
         return _line;
       },
@@ -209,7 +219,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'lineAlign', extend({}, baseObj, {
+    Object.defineProperty(cue, 'lineAlign', extend({
+    }, baseObj, {
       get: function () {
         return _lineAlign;
       },
@@ -223,7 +234,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'position', extend({}, baseObj, {
+    Object.defineProperty(cue, 'position', extend({
+    }, baseObj, {
       get: function () {
         return _position;
       },
@@ -236,7 +248,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'positionAlign', extend({}, baseObj, {
+    Object.defineProperty(cue, 'positionAlign', extend({
+    }, baseObj, {
       get: function () {
         return _positionAlign;
       },
@@ -250,7 +263,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'size', extend({}, baseObj, {
+    Object.defineProperty(cue, 'size', extend({
+    }, baseObj, {
       get: function () {
         return _size;
       },
@@ -263,7 +277,8 @@ export default (function() {
       }
     }));
 
-    Object.defineProperty(cue, 'align', extend({}, baseObj, {
+    Object.defineProperty(cue, 'align', extend({
+    }, baseObj, {
       get: function () {
         return _align;
       },

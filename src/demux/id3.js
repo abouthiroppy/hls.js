@@ -142,7 +142,11 @@ class ID3 {
     //skip frame id, size, and flags
     let offset = 10;
 
-    return { type, size, data: data.subarray(offset, offset + size) };
+    return {
+      type,
+      size,
+      data: data.subarray(offset, offset + size)
+    };
   }
 
   /**
@@ -223,7 +227,11 @@ class ID3 {
     const owner = ID3._utf8ArrayToStr(frame.data, true);
     const privateData = new Uint8Array(frame.data.subarray(owner.length + 1));
 
-    return { key: frame.type, info: owner, data: privateData.buffer };
+    return {
+      key : frame.type,
+      info: owner,
+      data: privateData.buffer
+    };
   }
 
   static _decodeTextFrame(frame) {
@@ -243,7 +251,11 @@ class ID3 {
       index += description.length + 1;
       const value = ID3._utf8ArrayToStr(frame.data.subarray(index));
 
-      return { key: frame.type, info: description, data: value };
+      return {
+        key : frame.type,
+        info: description,
+        data: value
+      };
     } else {
       /*
       Format:
@@ -251,7 +263,10 @@ class ID3 {
       [1-?] = {Value}
       */
       const text = ID3._utf8ArrayToStr(frame.data.subarray(1));
-      return { key: frame.type, data: text };
+      return {
+        key : frame.type,
+        data: text
+      };
     }
   }
 
@@ -272,14 +287,21 @@ class ID3 {
       index += description.length + 1;
       const value = ID3._utf8ArrayToStr(frame.data.subarray(index));
 
-      return { key: frame.type, info: description, data: value };
+      return {
+        key : frame.type,
+        info: description,
+        data: value
+      };
     } else {
       /*
       Format:
       [0-?] = {URL}
       */
       const url = ID3._utf8ArrayToStr(frame.data);
-      return { key: frame.type, data: url };
+      return {
+        key : frame.type,
+        data: url
+      };
     }
   }
 

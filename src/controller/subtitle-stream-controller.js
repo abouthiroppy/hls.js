@@ -27,7 +27,8 @@ class SubtitleStreamController extends EventHandler {
       Event.SUBTITLE_TRACK_LOADED,
       Event.SUBTITLE_FRAG_PROCESSED);
     this.config = hls.config;
-    this.vttFragSNsProcessed = {};
+    this.vttFragSNsProcessed = {
+    };
     this.vttFragQueues = undefined;
     this.currentlyProcessing = null;
     this.state = State.STOPPED;
@@ -43,7 +44,8 @@ class SubtitleStreamController extends EventHandler {
 
   // Remove all queued items and create a new, empty queue for each track.
   clearVttFragQueues() {
-    this.vttFragQueues = {};
+    this.vttFragQueues = {
+    };
     this.tracks.forEach(track => {
       this.vttFragQueues[track.id] = [];
     });
@@ -54,7 +56,9 @@ class SubtitleStreamController extends EventHandler {
     if(this.currentlyProcessing === null && this.currentTrackId > -1 && this.vttFragQueues[this.currentTrackId].length) {
       let frag = this.currentlyProcessing = this.vttFragQueues[this.currentTrackId].shift();
       this.fragCurrent = frag;
-      this.hls.trigger(Event.FRAG_LOADING, { frag: frag });
+      this.hls.trigger(Event.FRAG_LOADING, {
+        frag: frag
+      });
       this.state = State.FRAG_LOADING;
     }
   }
@@ -136,7 +140,9 @@ class SubtitleStreamController extends EventHandler {
           if ((frag.decryptdata && frag.decryptdata.uri != null) && (frag.decryptdata.key == null)) {
             logger.log(`Loading key for ${frag.sn}`);
             this.state = State.KEY_LOADING;
-            this.hls.trigger(Event.KEY_LOADING, { frag: frag });
+            this.hls.trigger(Event.KEY_LOADING, {
+              frag: frag
+            });
           } else {
             // Frags don't know their subtitle track ID, so let's just add that...
             frag.trackId = trackId;
@@ -153,7 +159,8 @@ class SubtitleStreamController extends EventHandler {
     logger.log('subtitle tracks updated');
     this.tracks = data.subtitleTracks;
     this.clearVttFragQueues();
-    this.vttFragSNsProcessed = {};
+    this.vttFragSNsProcessed = {
+    };
     this.tracks.forEach(track => {
       this.vttFragSNsProcessed[track.id] = [];
     });
@@ -201,7 +208,14 @@ class SubtitleStreamController extends EventHandler {
           } catch (error) {
             endTime = Date.now();
           }
-          hls.trigger(Event.FRAG_DECRYPTED, { frag: fragLoaded, payload: decryptedData, stats: { tstart: startTime, tdecrypt: endTime } });
+          hls.trigger(Event.FRAG_DECRYPTED, {
+            frag   : fragLoaded,
+            payload: decryptedData,
+            stats  : {
+              tstart  : startTime,
+              tdecrypt: endTime
+            }
+          });
         });
       }
     }

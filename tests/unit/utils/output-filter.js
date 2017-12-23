@@ -8,7 +8,12 @@ describe('OutputFilter', () => {
     let captionsTrackCalled = false;
     return {
       addCues: (trackName, startTime, endTime, screen) => {
-        lastCueArguments = { trackName, startTime, endTime, screen };
+        lastCueArguments = {
+          trackName,
+          startTime,
+          endTime,
+          screen
+        };
         callCount++;
       },
       createCaptionsTrack: (track) => {
@@ -28,7 +33,8 @@ describe('OutputFilter', () => {
   });
 
   it('handles new cue without dispatching', () => {
-    outputFilter.newCue(0, 1, {});
+    outputFilter.newCue(0, 1, {
+    });
     let lastCueAdded = timelineController.getLastCueAdded();
     assert.strictEqual(lastCueAdded, null);
     assert.strictEqual(timelineController.getCallCount(), 0);
@@ -36,7 +42,8 @@ describe('OutputFilter', () => {
   });
 
   it('handles single cue and dispatch', () => {
-    let lastScreen = {};
+    let lastScreen = {
+    };
     outputFilter.newCue(0, 1, lastScreen);
     outputFilter.dispatchCue();
     let lastCueAdded = timelineController.getLastCueAdded();
@@ -45,9 +52,12 @@ describe('OutputFilter', () => {
   });
 
   it('handles multiple cues and dispatch', () => {
-    outputFilter.newCue(0, 1, {});
-    outputFilter.newCue(1, 2, {});
-    let lastScreen = {};
+    outputFilter.newCue(0, 1, {
+    });
+    outputFilter.newCue(1, 2, {
+    });
+    let lastScreen = {
+    };
     outputFilter.newCue(3, 4, lastScreen);
     outputFilter.dispatchCue();
     let lastCueAdded = timelineController.getLastCueAdded();
@@ -58,7 +68,8 @@ describe('OutputFilter', () => {
   });
 
   it('does not dispatch empty cues', () => {
-    outputFilter.newCue(0, 1, {});
+    outputFilter.newCue(0, 1, {
+    });
     assert.strictEqual(timelineController.getCallCount(), 0);
     outputFilter.dispatchCue();
     assert.strictEqual(timelineController.getCallCount(), 1);

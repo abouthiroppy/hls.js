@@ -73,7 +73,9 @@ describe('level-helper', function () {
 
   it ('adjusts level fragments without overlapping CC range but with programDateTime info', function () {
 
-    const lastFrag = { cc: 0 };
+    const lastFrag = {
+      cc: 0
+    };
     const lastLevel = {
       details: {
         PTSKnown       : true,
@@ -170,7 +172,9 @@ describe('level-helper', function () {
 
   it('finds the first fragment in an array which matches the CC of the first fragment in another array', function () {
     const prevDetails = {
-      fragments: [mockReferenceFrag, { cc: 1  }]
+      fragments: [mockReferenceFrag, {
+        cc: 1
+      }]
     };
     const curDetails = {
       fragments: mockFrags
@@ -182,25 +186,42 @@ describe('level-helper', function () {
 
   it('returns undefined if there are no frags in the previous level', function () {
     const expected = undefined;
-    const actual = findDiscontinuousReferenceFrag({ fragments: [] }, { fragments: mockFrags });
+    const actual = findDiscontinuousReferenceFrag({
+      fragments: []
+    }, {
+      fragments: mockFrags
+    });
     assert.equal(expected, actual);
   });
 
   it('returns undefined if there are no matching frags in the previous level', function () {
     const expected = undefined;
-    const actual = findDiscontinuousReferenceFrag({ fragments: [{ cc: 10 }] }, { fragments: mockFrags });
+    const actual = findDiscontinuousReferenceFrag({
+      fragments: [{
+        cc: 10
+      }]
+    }, {
+      fragments: mockFrags
+    });
     assert.equal(expected, actual);
   });
 
   it('returns undefined if there are no frags in the current level', function () {
     const expected = undefined;
-    const actual = findDiscontinuousReferenceFrag({ fragments: [{ cc: 0 }] }, { fragments: [] });
+    const actual = findDiscontinuousReferenceFrag({
+      fragments: [{
+        cc: 0
+      }]
+    }, {
+      fragments: []
+    });
     assert.equal(expected, actual);
   });
 
   it('should align current level when CC increases within the level', function () {
     const lastLevel = {
-      details: {}
+      details: {
+      }
     };
     const curDetails = {
       startCC: 0,
@@ -213,7 +234,8 @@ describe('level-helper', function () {
 
   it('should align current level when CC increases from last frag to current level', function () {
     const lastLevel = {
-      details: {}
+      details: {
+      }
     };
     const lastFrag = {
       cc: 0
@@ -229,7 +251,8 @@ describe('level-helper', function () {
 
   it('should not align when there is no CC increase', function () {
     const lastLevel = {
-      details: {}
+      details: {
+      }
     };
     const curDetails = {
       startCC: 1,
@@ -273,7 +296,8 @@ describe('level-helper', function () {
 
   it('should not align when there are no current level details', function () {
     const lastLevel = {
-      details: {}
+      details: {
+      }
     };
     const lastFrag = {
       cc: 1

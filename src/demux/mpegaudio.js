@@ -61,7 +61,11 @@ const MpegAudio = {
     if (header && offset + header.frameLength <= data.length) {
       let frameDuration = header.samplesPerFrame * 90000 / header.sampleRate;
       let stamp = pts + frameIndex * frameDuration;
-      let sample = { unit: data.subarray(offset, offset + header.frameLength), pts: stamp, dts: stamp };
+      let sample = {
+        unit: data.subarray(offset, offset + header.frameLength),
+        pts : stamp,
+        dts : stamp
+      };
 
       track.config = [];
       track.channelCount = header.channelCount;
@@ -69,7 +73,10 @@ const MpegAudio = {
       track.samples.push(sample);
       track.len += header.frameLength;
 
-      return { sample, length: header.frameLength };
+      return {
+        sample,
+        length: header.frameLength
+      };
     }
 
     return undefined;
@@ -92,7 +99,12 @@ const MpegAudio = {
       let samplesPerFrame = sampleCoefficient * 8 * bytesInSlot;
       let frameLength = parseInt(sampleCoefficient * bitRate / sampleRate + headerG, 10) * bytesInSlot;
 
-      return { sampleRate, channelCount, frameLength, samplesPerFrame };
+      return {
+        sampleRate,
+        channelCount,
+        frameLength,
+        samplesPerFrame
+      };
     }
 
     return undefined;

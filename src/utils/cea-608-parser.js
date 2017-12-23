@@ -153,10 +153,44 @@ let getCharForByte = function(byte) {
 let NR_ROWS = 15,
   NR_COLS = 100;
 // Tables to look up row from PAC data
-let rowsLowCh1 = { 0x11: 1, 0x12: 3, 0x15: 5, 0x16: 7, 0x17: 9, 0x10: 11, 0x13: 12, 0x14: 14 };
-let rowsHighCh1 = { 0x11: 2, 0x12: 4, 0x15: 6, 0x16: 8, 0x17: 10, 0x13: 13, 0x14: 15 };
-let rowsLowCh2 = { 0x19: 1, 0x1A: 3, 0x1D: 5, 0x1E: 7, 0x1F: 9, 0x18: 11, 0x1B: 12, 0x1C: 14 };
-let rowsHighCh2 = { 0x19: 2, 0x1A: 4, 0x1D: 6, 0x1E: 8, 0x1F: 10, 0x1B: 13, 0x1C: 15 };
+let rowsLowCh1 = {
+  0x11: 1,
+  0x12: 3,
+  0x15: 5,
+  0x16: 7,
+  0x17: 9,
+  0x10: 11,
+  0x13: 12,
+  0x14: 14
+};
+let rowsHighCh1 = {
+  0x11: 2,
+  0x12: 4,
+  0x15: 6,
+  0x16: 8,
+  0x17: 10,
+  0x13: 13,
+  0x14: 15
+};
+let rowsLowCh2 = {
+  0x19: 1,
+  0x1A: 3,
+  0x1D: 5,
+  0x1E: 7,
+  0x1F: 9,
+  0x18: 11,
+  0x1B: 12,
+  0x1C: 14
+};
+let rowsHighCh2 = {
+  0x19: 2,
+  0x1A: 4,
+  0x1D: 6,
+  0x1E: 8,
+  0x1F: 10,
+  0x1B: 13,
+  0x1C: 15
+};
 
 let backgroundColors = ['white', 'green', 'blue', 'cyan', 'red', 'yellow', 'magenta', 'black', 'transparent'];
 
@@ -164,10 +198,17 @@ let backgroundColors = ['white', 'green', 'blue', 'cyan', 'red', 'yellow', 'mage
  * Simple logger class to be able to write with time-stamps and filter on level.
  */
 let logger = {
-  verboseFilter: { 'DATA': 3, 'DEBUG': 3, 'INFO': 2, 'WARNING': 2, 'TEXT': 1, 'ERROR': 0 },
-  time         : null,
-  verboseLevel : 0, // Only write errors
-  setTime      : function(newTime) {
+  verboseFilter: {
+    'DATA'   : 3,
+    'DEBUG'  : 3,
+    'INFO'   : 2,
+    'WARNING': 2,
+    'TEXT'   : 1,
+    'ERROR'  : 0
+  },
+  time        : null,
+  verboseLevel: 0, // Only write errors
+  setTime     : function(newTime) {
     this.time = newTime;
   },
   log: function(severity, msg) {
@@ -537,7 +578,13 @@ class CaptionScreen {
       row.setCursor(pacData.indent);
       pacData.color = row.chars[prevPos].penState.foreground;
     }
-    let styles = { foreground: pacData.color, underline: pacData.underline, italics: pacData.italics, background: 'black', flash: false };
+    let styles = {
+      foreground: pacData.color,
+      underline : pacData.underline,
+      italics   : pacData.italics,
+      background: 'black',
+      flash     : false
+    };
     this.setPen(styles);
   }
 
@@ -720,7 +767,9 @@ class Cea608Channel {
 
   ccFON() { //Flash On
     logger.log('INFO', 'FON - Flash On');
-    this.writeScreen.setPen({ flash: true });
+    this.writeScreen.setPen({
+      flash: true
+    });
   }
 
   ccRDC() { // Resume Direct Captioning (switch mode to PaintOn)
@@ -773,7 +822,9 @@ class Cea608Channel {
   }
 
   ccMIDROW(secondByte) { // Parse MIDROW command
-    let styles = { flash: false };
+    let styles = {
+      flash: false
+    };
     styles.underline = secondByte % 2 === 1;
     styles.italics = secondByte >= 0x2e;
     if (!styles.italics) {
@@ -834,7 +885,12 @@ class Cea608Parser {
     this.bufferedData = [];
     this.startTime = null;
     this.lastTime = null;
-    this.dataCounters = { 'padding': 0, 'char': 0, 'cmd': 0, 'other': 0 };
+    this.dataCounters = {
+      'padding': 0,
+      'char'   : 0,
+      'cmd'    : 0,
+      'other'  : 0
+    };
   }
 
   getHandler(index) {
@@ -1035,7 +1091,13 @@ class Cea608Parser {
      */
   interpretPAC(row, byte) {
     let pacIndex = byte;
-    let pacData = { color: null, italics: false, indent: null, underline: false, row: row };
+    let pacData = {
+      color    : null,
+      italics  : false,
+      indent   : null,
+      underline: false,
+      row      : row
+    };
 
     if (byte > 0x5F)
       pacIndex = byte - 0x60;
@@ -1110,7 +1172,8 @@ class Cea608Parser {
     if (!(case1 || case2))
       return false;
 
-    bkgData = {};
+    bkgData = {
+    };
     if (a  === 0x10 || a === 0x18) {
       index = Math.floor((b-0x20)/2);
       bkgData.background = backgroundColors[index];

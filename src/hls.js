@@ -49,7 +49,8 @@ export default class Hls {
     Hls.defaultConfig = defaultConfig;
   }
 
-  constructor(config = {}) {
+  constructor(config = {
+  }) {
     let defaultConfig = Hls.DefaultConfig;
 
     if ((config.liveSyncDurationCount || config.liveMaxLatencyDurationCount) && (config.liveSyncDuration || config.liveMaxLatencyDuration))
@@ -146,7 +147,9 @@ export default class Hls {
   attachMedia(media) {
     logger.log('attachMedia');
     this.media = media;
-    this.trigger(Event.MEDIA_ATTACHING, { media: media });
+    this.trigger(Event.MEDIA_ATTACHING, {
+      media: media
+    });
   }
 
   detachMedia() {
@@ -156,11 +159,15 @@ export default class Hls {
   }
 
   loadSource(url) {
-    url = URLToolkit.buildAbsoluteURL(window.location.href, url, { alwaysNormalize: true });
+    url = URLToolkit.buildAbsoluteURL(window.location.href, url, {
+      alwaysNormalize: true
+    });
     logger.log(`loadSource:${url}`);
     this.url = url;
     // when attaching to a source URL, trigger a playlist load
-    this.trigger(Event.MANIFEST_LOADING, { url: url });
+    this.trigger(Event.MANIFEST_LOADING, {
+      url: url
+    });
   }
 
   startLoad(startPosition=-1) {

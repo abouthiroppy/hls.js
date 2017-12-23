@@ -63,7 +63,8 @@ export default class LevelController extends EventHandler {
   onManifestLoaded(data) {
     let levels = [];
     let bitrateStart;
-    let levelSet = {};
+    let levelSet = {
+    };
     let levelFromSet = null;
     let videoCodecFound = false;
     let audioCodecFound = false;
@@ -185,7 +186,11 @@ export default class LevelController extends EventHandler {
       if (!levelDetails || levelDetails.live === true) {
         // level not retrieved yet, or live playlist we need to (re)load it
         let urlId = level.urlId;
-        hls.trigger(Event.LEVEL_LOADING, { url: level.url[urlId], level: newLevel, id: urlId });
+        hls.trigger(Event.LEVEL_LOADING, {
+          url  : level.url[urlId],
+          level: newLevel,
+          id   : urlId
+        });
       }
     } else {
       // invalid level id given, trigger error
@@ -396,7 +401,11 @@ export default class LevelController extends EventHandler {
       level = this._levels[this.currentLevelIndex];
       if (level !== undefined && level.url.length > 0) {
         urlIndex = level.urlId;
-        this.hls.trigger(Event.LEVEL_LOADING, { url: level.url[urlIndex], level: this.currentLevelIndex, id: urlIndex });
+        this.hls.trigger(Event.LEVEL_LOADING, {
+          url  : level.url[urlIndex],
+          level: this.currentLevelIndex,
+          id   : urlIndex
+        });
       }
     }
   }

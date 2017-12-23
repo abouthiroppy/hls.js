@@ -247,7 +247,9 @@ VTTParser.prototype = {
     // example when flush() is called.
     if (data) {
       // Try to decode the data that we received.
-      self.buffer += self.decoder.decode(data, { stream: true });
+      self.buffer += self.decoder.decode(data, {
+        stream: true
+      });
     }
 
     function collectNextLine() {

@@ -105,8 +105,11 @@ class MP4Remuxer {
       videoSamples = videoTrack.samples,
       typeSupported = this.typeSupported,
       container = 'audio/mp4',
-      tracks = {},
-      data = { tracks: tracks },
+      tracks = {
+      },
+      data = {
+        tracks: tracks
+      },
       computePTSDTS = (this._initPTS === undefined),
       initPTS, initDTS;
 
@@ -159,7 +162,9 @@ class MP4Remuxer {
       if (computePTSDTS) {
         initPTS = Math.min(initPTS, videoSamples[0].pts - inputTimeScale * timeOffset);
         initDTS = Math.min(initDTS, videoSamples[0].dts - inputTimeScale * timeOffset);
-        this.observer.trigger(Event.INIT_PTS_FOUND, { initPTS: initPTS });
+        this.observer.trigger(Event.INIT_PTS_FOUND, {
+          initPTS: initPTS
+        });
       }
     }
 
@@ -171,7 +176,12 @@ class MP4Remuxer {
         this._initDTS = initDTS;
       }
     } else {
-      observer.trigger(Event.ERROR, { type: ErrorTypes.MEDIA_ERROR, details: ErrorDetails.FRAG_PARSING_ERROR, fatal: false, reason: 'no audio/video samples found' });
+      observer.trigger(Event.ERROR, {
+        type   : ErrorTypes.MEDIA_ERROR,
+        details: ErrorDetails.FRAG_PARSING_ERROR,
+        fatal  : false,
+        reason : 'no audio/video samples found'
+      });
     }
   }
 
@@ -315,7 +325,13 @@ class MP4Remuxer {
     try {
       mdat = new Uint8Array(mdatSize);
     } catch(err) {
-      this.observer.trigger(Event.ERROR, { type: ErrorTypes.MUX_ERROR, details: ErrorDetails.REMUX_ALLOC_ERROR, fatal: false, bytes: mdatSize, reason: `fail allocating video mdat ${mdatSize}` });
+      this.observer.trigger(Event.ERROR, {
+        type   : ErrorTypes.MUX_ERROR,
+        details: ErrorDetails.REMUX_ALLOC_ERROR,
+        fatal  : false,
+        bytes  : mdatSize,
+        reason : `fail allocating video mdat ${mdatSize}`
+      });
       return;
     }
     let view = new DataView(mdat.buffer);
@@ -524,7 +540,11 @@ class MP4Remuxer {
               logger.log('Unable to get silent frame for given audio codec; duplicating last frame instead.');
               fillFrame = sample.unit.subarray();
             }
-            inputSamples.splice(i, 0, { unit: fillFrame, pts: newStamp, dts: newStamp });
+            inputSamples.splice(i, 0, {
+              unit: fillFrame,
+              pts : newStamp,
+              dts : newStamp
+            });
             track.len += fillFrame.length;
             nextPts += inputSampleDuration;
             i++;
@@ -594,7 +614,13 @@ class MP4Remuxer {
           try {
             mdat = new Uint8Array(mdatSize);
           } catch(err) {
-            this.observer.trigger(Event.ERROR, { type: ErrorTypes.MUX_ERROR, details: ErrorDetails.REMUX_ALLOC_ERROR, fatal: false, bytes: mdatSize, reason: `fail allocating audio mdat ${mdatSize}` });
+            this.observer.trigger(Event.ERROR, {
+              type   : ErrorTypes.MUX_ERROR,
+              details: ErrorDetails.REMUX_ALLOC_ERROR,
+              fatal  : false,
+              bytes  : mdatSize,
+              reason : `fail allocating audio mdat ${mdatSize}`
+            });
             return;
           }
           if (!rawMPEG) {
@@ -714,7 +740,11 @@ class MP4Remuxer {
     let samples = [];
     for(let i = 0; i < nbSamples; i++) {
       let stamp = startDTS + i * frameDuration;
-      samples.push({ unit: silentFrame, pts: stamp, dts: stamp });
+      samples.push({
+        unit: silentFrame,
+        pts : stamp,
+        dts : stamp
+      });
       track.len += silentFrame.length;
     }
     track.samples = samples;

@@ -40,7 +40,11 @@ class FPSController extends EventHandler{
           currentDecoded = decodedFrames - this.lastDecodedFrames,
           droppedFPS = 1000 * currentDropped / currentPeriod,
           hls = this.hls;
-        hls.trigger(Event.FPS_DROP, { currentDropped: currentDropped, currentDecoded: currentDecoded, totalDroppedFrames: droppedFrames });
+        hls.trigger(Event.FPS_DROP, {
+          currentDropped    : currentDropped,
+          currentDecoded    : currentDecoded,
+          totalDroppedFrames: droppedFrames
+        });
         if (droppedFPS > 0) {
           //logger.log('checkFPS : droppedFPS/decodedFPS:' + droppedFPS/(1000 * currentDecoded / currentPeriod));
           if (currentDropped > hls.config.fpsDroppedMonitoringThreshold * currentDecoded) {
@@ -48,7 +52,10 @@ class FPSController extends EventHandler{
             logger.warn('drop FPS ratio greater than max allowed value for currentLevel: ' + currentLevel);
             if (currentLevel > 0 && (hls.autoLevelCapping === -1 || hls.autoLevelCapping >= currentLevel)) {
               currentLevel = currentLevel - 1;
-              hls.trigger(Event.FPS_DROP_LEVEL_CAPPING, { level: currentLevel, droppedLevel: hls.currentLevel });
+              hls.trigger(Event.FPS_DROP_LEVEL_CAPPING, {
+                level       : currentLevel,
+                droppedLevel: hls.currentLevel
+              });
               hls.autoLevelCapping = currentLevel;
               hls.streamController.nextLevelSwitch();
             }

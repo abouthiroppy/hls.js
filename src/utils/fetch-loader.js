@@ -19,14 +19,21 @@ class FetchLoader {
 
 
   load(context, config, callbacks) {
-    let stats = { trequest: performance.now(), retry: 0 }, targetURL = context.url, request,
-      initParams = { method     : 'GET',
+    let stats = {
+        trequest: performance.now(),
+        retry   : 0
+      }, targetURL = context.url, request,
+      initParams = {
+        method     : 'GET',
         mode       : 'cors',
         credentials: 'same-origin'
       };
 
-    if (context.rangeEnd)
-      initParams.headers = new Headers({ 'Range': 'bytes=' + context.rangeStart + '-' + (context.rangeEnd-1) });
+    if (context.rangeEnd) {
+      initParams.headers = new Headers({
+        'Range': 'bytes=' + context.rangeStart + '-' + (context.rangeEnd-1)
+      });
+    }
 
 
     if (this.fetchSetup)
@@ -48,11 +55,15 @@ class FetchLoader {
           return response.text();
 
       } else {
-        callbacks.onError({ text: 'fetch, bad network response' }, context);
+        callbacks.onError({
+          text: 'fetch, bad network response'
+        }, context);
         return;
       }
     }).catch(function(error) {
-      callbacks.onError({ text: error.message }, context);
+      callbacks.onError({
+        text: error.message
+      }, context);
       return;
     });
     // process response Promise
@@ -66,7 +77,10 @@ class FetchLoader {
           len = responseData.byteLength;
 
         stats.loaded = stats.total = len;
-        let response = { url: targetURL, data: responseData };
+        let response = {
+          url : targetURL,
+          data: responseData
+        };
         callbacks.onSuccess(response, stats, context);
       }
     });
