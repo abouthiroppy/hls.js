@@ -53,6 +53,6 @@ module.exports = {
       "max-len": 0,
       "max-statements": 0,
       "space-after-keywords": 0,
-      "semi": "always"
+      "semi": ["error", "always"]
   }
 };
