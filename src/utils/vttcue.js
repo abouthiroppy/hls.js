@@ -26,11 +26,11 @@ export default (function() {
     rl: true
   };
   let alignSetting = {
-    start: true,
+    start : true,
     middle: true,
-    end: true,
-    left: true,
-    right: true
+    end   : true,
+    left  : true,
+    right : true
   };
 
   function findDirectionSetting(value) {

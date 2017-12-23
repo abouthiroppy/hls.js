@@ -8,7 +8,7 @@ import { logger } from '../utils/logger';
 /*globals self: false */
 
 class Decrypter {
-  constructor(observer,config) {
+  constructor(observer, config) {
     this.observer = observer;
     this.config = config;
     this.logEnabled = true;
@@ -43,13 +43,13 @@ class Decrypter {
       const subtle = this.subtle;
       if (this.key !== key) {
         this.key = key;
-        this.fastAesKey = new FastAESKey(subtle,key);
+        this.fastAesKey = new FastAESKey(subtle, key);
       }
 
       this.fastAesKey.expandKey().
         then((aesKey) => {
           // decrypt using web crypto
-          let crypto = new AESCrypto(subtle,iv);
+          let crypto = new AESCrypto(subtle, iv);
           crypto.decrypt(data, aesKey).
             catch ((err) => {
               this.onWebCryptoError(err, data, key, iv, callback);

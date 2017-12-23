@@ -14,8 +14,8 @@ describe('OutputFilter', () => {
       createCaptionsTrack: (track) => {
         captionsTrackCalled = true;
       },
-      getCallCount: () => callCount,
-      getLastCueAdded: () => lastCueArguments,
+      getCallCount          : () => callCount,
+      getLastCueAdded       : () => lastCueArguments,
       didCaptionsTrackInvoke: () => captionsTrackCalled,
     };
   };

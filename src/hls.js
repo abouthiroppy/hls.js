@@ -265,7 +265,7 @@ export default class Hls {
     const hls = this;
     // if not in automatic start level detection, ensure startLevel is greater than minAutoLevel
     if (newLevel !== -1)
-      newLevel = Math.max(newLevel,hls.minAutoLevel);
+      newLevel = Math.max(newLevel, hls.minAutoLevel);
 
     hls.levelController.startLevel = newLevel;
   }
@@ -295,7 +295,7 @@ export default class Hls {
   get minAutoLevel() {
     let hls = this, levels = hls.levels, minAutoBitrate = hls.config.minAutoBitrate, len = levels ? levels.length : 0;
     for (let i = 0; i < len; i++) {
-      const levelNextBitrate = levels[i].realBitrate ? Math.max(levels[i].realBitrate,levels[i].bitrate) : levels[i].bitrate;
+      const levelNextBitrate = levels[i].realBitrate ? Math.max(levels[i].realBitrate, levels[i].bitrate) : levels[i].bitrate;
       if (levelNextBitrate > minAutoBitrate)
         return i;
 
@@ -321,7 +321,7 @@ export default class Hls {
   get nextAutoLevel() {
     const hls = this;
     // ensure next auto level is between  min and max auto level
-    return Math.min(Math.max(hls.abrController.nextAutoLevel,hls.minAutoLevel),hls.maxAutoLevel);
+    return Math.min(Math.max(hls.abrController.nextAutoLevel, hls.minAutoLevel), hls.maxAutoLevel);
   }
 
   // this setter is used to force next auto level
@@ -329,7 +329,7 @@ export default class Hls {
   // forced value is valid for one fragment. upon succesful frag loading at forced level, this value will be resetted to -1 by ABR controller
   set nextAutoLevel(nextLevel) {
     const hls = this;
-    hls.abrController.nextAutoLevel = Math.max(hls.minAutoLevel,nextLevel);
+    hls.abrController.nextAutoLevel = Math.max(hls.minAutoLevel, nextLevel);
   }
 
   /** get alternate audio tracks list from playlist **/

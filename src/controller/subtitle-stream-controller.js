@@ -8,9 +8,9 @@ import { logger } from '../utils/logger';
 import Decrypter from '../crypt/decrypter';
 
 const State = {
-  STOPPED: 'STOPPED',
-  IDLE: 'IDLE',
-  KEY_LOADING: 'KEY_LOADING',
+  STOPPED     : 'STOPPED',
+  IDLE        : 'IDLE',
+  KEY_LOADING : 'KEY_LOADING',
   FRAG_LOADING: 'FRAG_LOADING'
 };
 

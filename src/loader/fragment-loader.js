@@ -46,9 +46,9 @@ class FragmentLoader extends EventHandler {
       loaderContext.rangeStart = start;
       loaderContext.rangeEnd = end;
     }
-    loaderConfig = { timeout: config.fragLoadingTimeOut, maxRetry: 0 , retryDelay: 0, maxRetryDelay: config.fragLoadingMaxRetryTimeout };
+    loaderConfig = { timeout: config.fragLoadingTimeOut, maxRetry: 0, retryDelay: 0, maxRetryDelay: config.fragLoadingMaxRetryTimeout };
     loaderCallbacks = { onSuccess: this.loadsuccess.bind(this), onError: this.loaderror.bind(this), onTimeout: this.loadtimeout.bind(this), onProgress: this.loadprogress.bind(this) };
-    loader.load(loaderContext,loaderConfig,loaderCallbacks);
+    loader.load(loaderContext, loaderConfig, loaderCallbacks);
   }
 
   loadsuccess(response, stats, context, networkDetails=null) {

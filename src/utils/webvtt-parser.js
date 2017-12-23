@@ -8,8 +8,8 @@ const startsWith = function(inputString, searchString, position) {
 
 const cueString2millis = function(timeString) {
   let ts = parseInt(timeString.substr(-3));
-  let secs = parseInt(timeString.substr(-6,2));
-  let mins = parseInt(timeString.substr(-9,2));
+  let secs = parseInt(timeString.substr(-6, 2));
+  let mins = parseInt(timeString.substr(-9, 2));
   let hours = timeString.length > 9 ? parseInt(timeString.substr(0, timeString.indexOf(':'))) : 0;
 
   if (isNaN(ts) || isNaN(secs) || isNaN(mins) || isNaN(hours))

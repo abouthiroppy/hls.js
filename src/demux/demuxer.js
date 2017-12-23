@@ -24,11 +24,11 @@ class Demuxer {
       observer.removeListener(event, ...data);
     };
 
-    let forwardMessage = function(ev,data) {
+    let forwardMessage = function(ev, data) {
       data = data || {};
       data.frag = this.frag;
       data.id = this.id;
-      hls.trigger(ev,data);
+      hls.trigger(ev, data);
     }.bind(this);
 
     // forward events to main thread
@@ -42,9 +42,9 @@ class Demuxer {
     observer.on(Event.INIT_PTS_FOUND, forwardMessage);
 
     const typeSupported = {
-      mp4: MediaSource.isTypeSupported('video/mp4'),
+      mp4 : MediaSource.isTypeSupported('video/mp4'),
       mpeg: MediaSource.isTypeSupported('audio/mpeg'),
-      mp3: MediaSource.isTypeSupported('audio/mp4; codecs="mp3"')
+      mp3 : MediaSource.isTypeSupported('audio/mp4; codecs="mp3"')
     };
     // navigator.vendor is not always available in Web Worker
     // refer to https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/navigator
@@ -64,11 +64,11 @@ class Demuxer {
           // revoke the Object URL that was used to create demuxer worker, so as not to leak it
           URL.revokeObjectURL(w.objectURL);
         }
-        this.demuxer = new DemuxerInline(observer,typeSupported,config,vendor);
+        this.demuxer = new DemuxerInline(observer, typeSupported, config, vendor);
         this.w = undefined;
       }
     } else {
-      this.demuxer = new DemuxerInline(observer,typeSupported,config, vendor);
+      this.demuxer = new DemuxerInline(observer, typeSupported, config, vendor);
     }
   }
 
@@ -92,7 +92,7 @@ class Demuxer {
     }
   }
 
-  push(data, initSegment, audioCodec, videoCodec, frag, duration,accurateTimeOffset,defaultInitPTS) {
+  push(data, initSegment, audioCodec, videoCodec, frag, duration, accurateTimeOffset, defaultInitPTS) {
     const w = this.w;
     const timeOffset = !isNaN(frag.startDTS) ? frag.startDTS  : frag.start;
     const decryptdata = frag.decryptdata;
@@ -110,11 +110,11 @@ class Demuxer {
     this.frag = frag;
     if (w) {
       // post fragment payload as transferable objects for ArrayBuffer (no copy)
-      w.postMessage({ cmd: 'demux', data, decryptdata, initSegment, audioCodec, videoCodec, timeOffset, discontinuity, trackSwitch, contiguous, duration, accurateTimeOffset,defaultInitPTS }, data instanceof ArrayBuffer ? [data] : []);
+      w.postMessage({ cmd: 'demux', data, decryptdata, initSegment, audioCodec, videoCodec, timeOffset, discontinuity, trackSwitch, contiguous, duration, accurateTimeOffset, defaultInitPTS }, data instanceof ArrayBuffer ? [data] : []);
     } else {
       let demuxer = this.demuxer;
       if (demuxer)
-        demuxer.push(data, decryptdata, initSegment, audioCodec, videoCodec, timeOffset, discontinuity, trackSwitch, contiguous, duration, accurateTimeOffset,defaultInitPTS);
+        demuxer.push(data, decryptdata, initSegment, audioCodec, videoCodec, timeOffset, discontinuity, trackSwitch, contiguous, duration, accurateTimeOffset, defaultInitPTS);
 
     }
   }

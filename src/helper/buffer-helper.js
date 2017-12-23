@@ -3,7 +3,7 @@
 */
 
 const BufferHelper = {
-  isBuffered: function(media,position) {
+  isBuffered: function(media, position) {
     try {
       if (media) {
         let buffered = media.buffered;
@@ -21,14 +21,14 @@ const BufferHelper = {
     return false;
   },
 
-  bufferInfo: function(media, pos,maxHoleDuration) {
+  bufferInfo: function(media, pos, maxHoleDuration) {
     try {
       if (media) {
-        let vbuffered = media.buffered, buffered = [],i;
+        let vbuffered = media.buffered, buffered = [], i;
         for (i = 0; i < vbuffered.length; i++)
           buffered.push({ start: vbuffered.start(i), end: vbuffered.end(i) });
 
-        return this.bufferedInfo(buffered,pos,maxHoleDuration);
+        return this.bufferedInfo(buffered, pos, maxHoleDuration);
       }
     } catch(error) {
       // this is to catch
@@ -38,10 +38,10 @@ const BufferHelper = {
     return { len: 0, start: pos, end: pos, nextStart: undefined } ;
   },
 
-  bufferedInfo: function(buffered,pos,maxHoleDuration) {
+  bufferedInfo: function(buffered, pos, maxHoleDuration) {
     let buffered2 = [],
       // bufferStart and bufferEnd are buffer boundaries around current video position
-      bufferLen,bufferStart, bufferEnd,bufferStartNext,i;
+      bufferLen, bufferStart, bufferEnd, bufferStartNext, i;
     // sort on buffer.start/smaller end (IE does not always return sorted buffered range)
     buffered.sort(function (a, b) {
       let diff = a.start - b.start;

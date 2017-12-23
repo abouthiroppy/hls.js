@@ -18,7 +18,7 @@ describe('AbrController', () => {
       { bitrate: 6221600, name: '1080', details: { totalduration: 10, fragments: [{}] } }
     ];
     let abrController = new AbrController(hls);
-    abrController.bwEstimator = new EwmaBandWidthEstimator(hls,15,4,5e5);
+    abrController.bwEstimator = new EwmaBandWidthEstimator(hls, 15, 4, 5e5);
     assert.equal(abrController.nextAutoLevel, 0);
   });
 });

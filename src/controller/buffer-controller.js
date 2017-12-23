@@ -219,7 +219,7 @@ class BufferController extends EventHandler {
     this.appending = false;
     let parent = this.parent;
     // count nb of pending segments waiting for appending on this sourcebuffer
-    let pending = this.segments.reduce( (counter, segment) => (segment.parent === parent) ? counter + 1 : counter , 0);
+    let pending = this.segments.reduce( (counter, segment) => (segment.parent === parent) ? counter + 1 : counter, 0);
     this.hls.trigger(Event.BUFFER_APPENDED, { parent: parent, pending: pending });
 
     // don't append in flushing mode
@@ -271,7 +271,7 @@ class BufferController extends EventHandler {
 
 
   createSourceBuffers(tracks) {
-    let sourceBuffer = this.sourceBuffer,mediaSource = this.mediaSource;
+    let sourceBuffer = this.sourceBuffer, mediaSource = this.mediaSource;
 
     for (let trackName in tracks) {
       if(!sourceBuffer[trackName]) {
@@ -307,7 +307,7 @@ class BufferController extends EventHandler {
   }
 
   onBufferAppendFail(data) {
-    logger.error('sourceBuffer error:',data.event);
+    logger.error('sourceBuffer error:', data.event);
     // according to http://www.w3.org/TR/media-source/#sourcebuffer-append-error
     // this error might not always be fatal (it is fatal if decode error is set, in that case
     // it will be followed by a mediaElement error ...)
@@ -520,7 +520,7 @@ class BufferController extends EventHandler {
             this.segments = [];
             event.details = ErrorDetails.BUFFER_FULL_ERROR;
             event.fatal = false;
-            hls.trigger(Event.ERROR,event);
+            hls.trigger(Event.ERROR, event);
             return;
           }
         }
@@ -566,7 +566,7 @@ class BufferController extends EventHandler {
                    to avoid rounding issues/infinite loop,
                    only flush buffer range of length greater than 500ms.
                 */
-                if (Math.min(flushEnd,bufEnd) - flushStart > 0.5 ) {
+                if (Math.min(flushEnd, bufEnd) - flushStart > 0.5 ) {
                   this.flushBufferCounter++;
                   logger.log(`flush ${type} [${flushStart},${flushEnd}], of [${bufStart},${bufEnd}], pos:${this.media.currentTime}`);
                   sb.remove(flushStart, flushEnd);

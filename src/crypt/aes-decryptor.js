@@ -2,8 +2,8 @@ class AESDecryptor {
   constructor() {
     // Static after running initTable
     this.rcon = [0x0, 0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36];
-    this.subMix = [new Uint32Array(256),new Uint32Array(256),new Uint32Array(256),new Uint32Array(256)];
-    this.invSubMix = [new Uint32Array(256),new Uint32Array(256),new Uint32Array(256),new Uint32Array(256)];
+    this.subMix = [new Uint32Array(256), new Uint32Array(256), new Uint32Array(256), new Uint32Array(256)];
+    this.invSubMix = [new Uint32Array(256), new Uint32Array(256), new Uint32Array(256), new Uint32Array(256)];
     this.sBox = new Uint32Array(256);
     this.invSBox = new Uint32Array(256);
 

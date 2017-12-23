@@ -19,7 +19,7 @@ let DemuxerWorker = function (self) {
     observer.removeListener(event, ...data);
   };
 
-  let forwardMessage = function(ev,data) {
+  let forwardMessage = function(ev, data) {
     self.postMessage({ event: ev, data: data });
   };
 
@@ -36,10 +36,10 @@ let DemuxerWorker = function (self) {
         console.warn('demuxerWorker: unable to enable logs');
       }
       // signal end of worker init
-      forwardMessage('init',null);
+      forwardMessage('init', null);
       break;
     case 'demux':
-      self.demuxer.push(data.data, data.decryptdata, data.initSegment, data.audioCodec, data.videoCodec, data.timeOffset,data.discontinuity, data.trackSwitch,data.contiguous,data.duration,data.accurateTimeOffset,data.defaultInitPTS);
+      self.demuxer.push(data.data, data.decryptdata, data.initSegment, data.audioCodec, data.videoCodec, data.timeOffset, data.discontinuity, data.trackSwitch, data.contiguous, data.duration, data.accurateTimeOffset, data.defaultInitPTS);
       break;
     default:
       break;
@@ -69,7 +69,7 @@ let DemuxerWorker = function (self) {
       transferable.push(data.data2.buffer);
       delete data.data2;
     }
-    self.postMessage(message,transferable);
+    self.postMessage(message, transferable);
   });
 };
 

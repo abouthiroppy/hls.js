@@ -117,8 +117,8 @@ describe('AttrList', () => {
 
   it('handles hexadecimalInteger conversions', () => {
     const list = new AttrList('HEX1=0x0123456789abcdef0123456789abcdef,HEX2=0x123,HEX3=0x0');
-    assert(bufferIsEqual(list.hexadecimalInteger('HEX1').buffer, new Uint8Array([0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xef,0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xef]).buffer));
-    assert(bufferIsEqual(list.hexadecimalInteger('HEX2').buffer, new Uint8Array([0x01,0x23]).buffer));
+    assert(bufferIsEqual(list.hexadecimalInteger('HEX1').buffer, new Uint8Array([0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef, 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]).buffer));
+    assert(bufferIsEqual(list.hexadecimalInteger('HEX2').buffer, new Uint8Array([0x01, 0x23]).buffer));
     assert(bufferIsEqual(list.hexadecimalInteger('HEX3').buffer, new Uint8Array([0x0]).buffer));
   });
 

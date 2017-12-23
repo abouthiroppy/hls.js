@@ -217,8 +217,8 @@ export function appendFrame(track, data, offset, pts, frameIndex) {
     //logger.log(`AAC frame, offset/length/total/pts:${offset+headerLength}/${frameLength}/${data.byteLength}/${(stamp/90).toFixed(0)}`);
     let aacSample = {
       unit: data.subarray(offset + headerLength, offset + headerLength + frameLength),
-      pts: stamp,
-      dts: stamp
+      pts : stamp,
+      dts : stamp
     };
 
     track.samples.push(aacSample);

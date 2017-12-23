@@ -1,5 +1,5 @@
 export default class AESCrypto {
-  constructor(subtle,iv) {
+  constructor(subtle, iv) {
     this.subtle = subtle;
     this.aesIV = iv;
   }

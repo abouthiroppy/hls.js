@@ -236,7 +236,7 @@ class PlaylistLoader extends EventHandler {
     let loaderConfig, loaderCallbacks;
     loaderConfig = { timeout, maxRetry, retryDelay, maxRetryDelay };
     loaderCallbacks = { onSuccess: this.loadsuccess.bind(this), onError: this.loaderror.bind(this), onTimeout: this.loadtimeout.bind(this) };
-    loader.load(context,loaderConfig,loaderCallbacks);
+    loader.load(context, loaderConfig, loaderCallbacks);
   }
 
   resolve(url, baseUrl) {
@@ -354,7 +354,7 @@ class PlaylistLoader extends EventHandler {
         // avoid sliced strings    https://github.com/video-dev/hls.js/issues/939
         const title = (' ' + result[2]).slice(1);
         frag.title = title ? title : null;
-        frag.tagList.push(title ? ['INF',duration,title] : ['INF',duration]);
+        frag.tagList.push(title ? ['INF', duration, title] : ['INF', duration]);
       } else if (result[3]) { // url
         if (!isNaN(frag.duration)) {
           const sn = currentSN++;
@@ -403,7 +403,7 @@ class PlaylistLoader extends EventHandler {
 
         switch (result[i]) {
         case '#':
-          frag.tagList.push(value2 ? [value1,value2] : [value1]);
+          frag.tagList.push(value2 ? [value1, value2] : [value1]);
           break;
         case 'PLAYLIST-TYPE':
           level.type = value1.toUpperCase();
@@ -564,7 +564,7 @@ class PlaylistLoader extends EventHandler {
   }
 
   loaderror(response, context, networkDetails=null) {
-    let details, fatal,loader = context.loader;
+    let details, fatal, loader = context.loader;
     switch(context.type) {
     case 'manifest':
       details = ErrorDetails.MANIFEST_LOAD_ERROR;

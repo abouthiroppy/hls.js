@@ -60,7 +60,7 @@ class AttrList {
       return undefined;
 
     return {
-      width: parseInt(res[1], 10),
+      width : parseInt(res[1], 10),
       height: parseInt(res[2], 10)
     };
   }

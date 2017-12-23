@@ -130,18 +130,18 @@ export default class LevelController extends EventHandler {
         levels,
         audioTracks,
         firstLevel: this._firstLevel,
-        stats: data.stats,
-        audio: audioCodecFound,
-        video: videoCodecFound,
-        altAudio: audioTracks.length > 0
+        stats     : data.stats,
+        audio     : audioCodecFound,
+        video     : videoCodecFound,
+        altAudio  : audioTracks.length > 0
       });
     } else {
       this.hls.trigger(Event.ERROR, {
-        type: ErrorTypes.MEDIA_ERROR,
+        type   : ErrorTypes.MEDIA_ERROR,
         details: ErrorDetails.MANIFEST_INCOMPATIBLE_CODECS_ERROR,
-        fatal: true,
-        url: this.hls.url,
-        reason: 'no level with compatible codecs found in manifest'
+        fatal  : true,
+        url    : this.hls.url,
+        reason : 'no level with compatible codecs found in manifest'
       });
     }
   }
@@ -190,11 +190,11 @@ export default class LevelController extends EventHandler {
     } else {
       // invalid level id given, trigger error
       hls.trigger(Event.ERROR, {
-        type: ErrorTypes.OTHER_ERROR,
+        type   : ErrorTypes.OTHER_ERROR,
         details: ErrorDetails.LEVEL_SWITCH_ERROR,
-        level: newLevel,
-        fatal: false,
-        reason: 'invalid level idx'
+        level  : newLevel,
+        fatal  : false,
+        reason : 'invalid level idx'
       });
     }
   }

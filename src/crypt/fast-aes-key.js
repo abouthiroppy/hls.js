@@ -1,5 +1,5 @@
 class FastAESKey {
-  constructor(subtle,key) {
+  constructor(subtle, key) {
     this.subtle = subtle;
     this.key = key;
   }

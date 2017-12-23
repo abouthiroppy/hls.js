@@ -3,9 +3,9 @@ function noop() {}
 const fakeLogger = {
   trace: noop,
   debug: noop,
-  log: noop,
-  warn: noop,
-  info: noop,
+  log  : noop,
+  warn : noop,
+  info : noop,
   error: noop
 };
 

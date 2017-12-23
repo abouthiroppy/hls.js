@@ -30,9 +30,9 @@ function retry(cb, numAttempts, interval) {
 let onTravis = !!process.env.TRAVIS;
 
 HttpServer.createServer({
-  showDir: false,
+  showDir  : false,
   autoIndex: false,
-  root: './',
+  root     : './',
 }).listen(8000, '127.0.0.1');
 
 
@@ -66,10 +66,10 @@ if (browserConfig.platform)
 describe('testing hls.js playback in the browser on "'+browserDescription+'"', function() {
   beforeEach(function() {
     let capabilities = {
-      name: '"'+stream.description+'" on "'+browserDescription+'"',
-      browserName: browserConfig.name,
-      platform: browserConfig.platform,
-      version: browserConfig.version,
+      name          : '"'+stream.description+'" on "'+browserDescription+'"',
+      browserName   : browserConfig.name,
+      platform      : browserConfig.platform,
+      version       : browserConfig.version,
       commandTimeout: 90,
     };
     if (onTravis) {

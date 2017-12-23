@@ -17,7 +17,7 @@ class MP4Demuxer {
     this.initPTS = initPTS;
   }
 
-  resetInitSegment(initSegment,audioCodec,videoCodec, duration) {
+  resetInitSegment(initSegment, audioCodec, videoCodec, duration) {
     //jshint unused:false
     if (initSegment && initSegment.byteLength) {
       const initData = this.initData = MP4Demuxer.parseInitSegment(initSegment);
@@ -42,7 +42,7 @@ class MP4Demuxer {
           tracks.video = { container: 'video/mp4', codec: videoCodec, initSegment: duration ? initSegment : null };
 
       }
-      this.observer.trigger(Event.FRAG_PARSING_INIT_SEGMENT,{ tracks: tracks });
+      this.observer.trigger(Event.FRAG_PARSING_INIT_SEGMENT, { tracks: tracks });
     } else {
       if (audioCodec)
         this.audioCodec = audioCodec;
@@ -55,7 +55,7 @@ class MP4Demuxer {
 
   static probe(data) {
     // ensure we find a moof box in the first 16 kB
-    return MP4Demuxer.findBox( { data: data, start: 0, end: Math.min(data.length, 16384) } ,['moof']).length > 0;
+    return MP4Demuxer.findBox( { data: data, start: 0, end: Math.min(data.length, 16384) }, ['moof']).length > 0;
   }
 
 
@@ -89,7 +89,7 @@ class MP4Demuxer {
 
 
   // Find the data for a box specified by its path
-  static findBox(data,path) {
+  static findBox(data, path) {
     let results = [],
       i, size, type, end, subresults, start, endbox;
 
@@ -177,14 +177,14 @@ class MP4Demuxer {
             let type = { 'soun': 'audio', 'vide': 'video' }[hdlrType];
             if (type) {
               // extract codec info. TODO : parse codec details to be able to build MIME type
-              let codecBox = MP4Demuxer.findBox( trak, ['mdia','minf','stbl','stsd']);
+              let codecBox = MP4Demuxer.findBox( trak, ['mdia', 'minf', 'stbl', 'stsd']);
               if (codecBox.length) {
                 codecBox = codecBox[0];
                 let codecType = MP4Demuxer.bin2str(codecBox.data.subarray(codecBox.start+12, codecBox.start+16));
                 logger.log(`MP4Demuxer:${type}:${codecType} found`);
               }
-              result[trackId] = { timescale: timescale , type: type };
-              result[type] = { timescale: timescale , id: trackId };
+              result[trackId] = { timescale: timescale, type: type };
+              result[type] = { timescale: timescale, id: trackId };
             }
           }
         }
@@ -252,7 +252,7 @@ class MP4Demuxer {
 
 
 
-  static offsetStartDTS(initData,fragment,timeOffset) {
+  static offsetStartDTS(initData, fragment, timeOffset) {
     MP4Demuxer.findBox(fragment, ['moof', 'traf']).map(function(traf) {
       return MP4Demuxer.findBox(traf, ['tfhd']).map(function(tfhd) {
       // get the track id from the tfhd
@@ -270,7 +270,7 @@ class MP4Demuxer {
             baseMediaDecodeTime *= Math.pow(2, 32);
             baseMediaDecodeTime += MP4Demuxer.readUint32(tfdt, 8);
             baseMediaDecodeTime -= timeOffset*timescale;
-            baseMediaDecodeTime = Math.max(baseMediaDecodeTime,0);
+            baseMediaDecodeTime = Math.max(baseMediaDecodeTime, 0);
             const upper = Math.floor(baseMediaDecodeTime / (UINT32_MAX + 1));
             const lower = Math.floor(baseMediaDecodeTime % (UINT32_MAX + 1));
             MP4Demuxer.writeUint32(tfdt, 4, upper);
@@ -282,21 +282,21 @@ class MP4Demuxer {
   }
 
   // feed incoming data to the front of the parsing pipeline
-  append(data, timeOffset,contiguous,accurateTimeOffset) {
+  append(data, timeOffset, contiguous, accurateTimeOffset) {
     let initData = this.initData;
     if(!initData) {
-      this.resetInitSegment(data,this.audioCodec,this.videoCodec);
+      this.resetInitSegment(data, this.audioCodec, this.videoCodec);
       initData = this.initData;
     }
     let startDTS, initPTS = this.initPTS;
     if (initPTS === undefined) {
-      let startDTS = MP4Demuxer.getStartDTS(initData,data);
+      let startDTS = MP4Demuxer.getStartDTS(initData, data);
       this.initPTS = initPTS = startDTS - timeOffset;
       this.observer.trigger(Event.INIT_PTS_FOUND, { initPTS: initPTS });
     }
-    MP4Demuxer.offsetStartDTS(initData,data,initPTS);
-    startDTS = MP4Demuxer.getStartDTS(initData,data);
-    this.remuxer.remux(initData.audio, initData.video, null, null, startDTS, contiguous,accurateTimeOffset,data);
+    MP4Demuxer.offsetStartDTS(initData, data, initPTS);
+    startDTS = MP4Demuxer.getStartDTS(initData, data);
+    this.remuxer.remux(initData.audio, initData.video, null, null, startDTS, contiguous, accurateTimeOffset, data);
   }
 
   destroy() {

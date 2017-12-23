@@ -69,7 +69,7 @@ class XhrLoader {
     }
 
     if (context.rangeEnd)
-      xhr.setRequestHeader('Range','bytes=' + context.rangeStart + '-' + (context.rangeEnd-1));
+      xhr.setRequestHeader('Range', 'bytes=' + context.rangeStart + '-' + (context.rangeEnd-1));
 
     xhr.onreadystatechange = this.readystatechange.bind(this);
     xhr.onprogress = this.loadprogress.bind(this);
@@ -103,8 +103,8 @@ class XhrLoader {
         let status = xhr.status;
         // http status between 200 to 299 are all successful
         if (status >= 200 && status < 300)  {
-          stats.tload = Math.max(stats.tfirst,performance.now());
-          let data,len;
+          stats.tload = Math.max(stats.tfirst, performance.now());
+          let data, len;
           if (context.responseType === 'arraybuffer') {
             data = xhr.response;
             len = data.byteLength;

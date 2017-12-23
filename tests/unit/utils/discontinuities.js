@@ -3,34 +3,34 @@ const assert = require('assert');
 import { shouldAlignOnDiscontinuities, findDiscontinuousReferenceFrag, adjustPts, alignDiscontinuities } from '../../../src/utils/discontinuities';
 
 const mockReferenceFrag = {
-  start: 20,
+  start   : 20,
   startPTS: 20,
-  endPTS: 24,
+  endPTS  : 24,
   duration: 4,
-  cc: 0,
+  cc      : 0,
 };
 
 const mockFrags = [
   {
-    start: 0,
+    start   : 0,
     startPTS: 0,
-    endPTS: 4,
+    endPTS  : 4,
     duration: 4,
-    cc: 0,
+    cc      : 0,
   },
   {
-    start: 4,
+    start   : 4,
     startPTS: 4,
-    endPTS: 8,
+    endPTS  : 8,
     duration: 4,
-    cc: 1
+    cc      : 1
   },
   {
-    start: 8,
+    start   : 8,
     startPTS: 8,
-    endPTS: 16,
+    endPTS  : 16,
     duration: 8,
-    cc: 1
+    cc      : 1
   }
 ];
 
@@ -39,29 +39,29 @@ describe('level-helper', function () {
   it ('adjusts level fragments with overlapping CC range using a reference fragment', function () {
     const details = {
       fragments: mockFrags.slice(0),
-      PTSKnown: false
+      PTSKnown : false
     };
     const expected = [
       {
-        start: 20,
+        start   : 20,
         startPTS: 20,
-        endPTS: 24,
+        endPTS  : 24,
         duration: 4,
-        cc: 0
+        cc      : 0
       },
       {
-        start: 24,
+        start   : 24,
         startPTS: 24,
-        endPTS: 28,
+        endPTS  : 28,
         duration: 4,
-        cc: 1
+        cc      : 1
       },
       {
-        start: 28,
+        start   : 28,
         startPTS: 28,
-        endPTS: 36,
+        endPTS  : 36,
         duration: 8,
-        cc: 1
+        cc      : 1
       }
     ];
 
@@ -76,29 +76,29 @@ describe('level-helper', function () {
     const lastFrag = { cc: 0 };
     const lastLevel = {
       details: {
-        PTSKnown: true,
+        PTSKnown       : true,
         programDateTime: new Date('2017-08-28 00:00:00'),
-        fragments: [
+        fragments      : [
           {
-            start: 20,
+            start   : 20,
             startPTS: 20,
-            endPTS: 24,
+            endPTS  : 24,
             duration: 4,
-            cc: 0,
+            cc      : 0,
           },
           {
-            start: 24,
+            start   : 24,
             startPTS: 24,
-            endPTS: 28,
+            endPTS  : 28,
             duration: 4,
-            cc: 1
+            cc      : 1
           },
           {
-            start: 28,
+            start   : 28,
             startPTS: 28,
-            endPTS: 36,
+            endPTS  : 36,
             duration: 8,
-            cc: 1
+            cc      : 1
           }
         ]
       }
@@ -107,64 +107,64 @@ describe('level-helper', function () {
     let details = {
       fragments: [
         {
-          start: 0,
+          start   : 0,
           startPTS: 0,
-          endPTS: 4,
+          endPTS  : 4,
           duration: 4,
-          cc: 2,
+          cc      : 2,
         },
         {
-          start: 4,
+          start   : 4,
           startPTS: 4,
-          endPTS: 8,
+          endPTS  : 8,
           duration: 4,
-          cc: 2
+          cc      : 2
         },
         {
-          start: 8,
+          start   : 8,
           startPTS: 8,
-          endPTS: 16,
+          endPTS  : 16,
           duration: 8,
-          cc: 3
+          cc      : 3
         }
       ],
-      PTSKnown: false,
+      PTSKnown       : false,
       programDateTime: new Date('2017-08-28 00:00:50'),
-      startCC: 2,
-      endCC: 3
+      startCC        : 2,
+      endCC          : 3
     };
 
     let detailsExpected = {
       fragments: [
         {
-          start: 70,
+          start   : 70,
           startPTS: 70,
-          endPTS: 74,
+          endPTS  : 74,
           duration: 4,
-          cc: 2
+          cc      : 2
         },
         {
-          start: 74,
+          start   : 74,
           startPTS: 74,
-          endPTS: 78,
+          endPTS  : 78,
           duration: 4,
-          cc: 2
+          cc      : 2
         },
         {
-          start: 78,
+          start   : 78,
           startPTS: 78,
-          endPTS: 86,
+          endPTS  : 86,
           duration: 8,
-          cc: 3
+          cc      : 3
         }
       ],
-      PTSKnown: true,
+      PTSKnown       : true,
       programDateTime: new Date('2017-08-28 00:00:50'),
-      startCC: 2,
-      endCC: 3
+      startCC        : 2,
+      endCC          : 3
     };
-    alignDiscontinuities(lastFrag,lastLevel,details);
-    assert.deepEqual(detailsExpected,details);
+    alignDiscontinuities(lastFrag, lastLevel, details);
+    assert.deepEqual(detailsExpected, details);
   });
 
 
@@ -204,7 +204,7 @@ describe('level-helper', function () {
     };
     const curDetails = {
       startCC: 0,
-      endCC: 1
+      endCC  : 1
     };
 
     const actual = shouldAlignOnDiscontinuities(null, lastLevel, curDetails);
@@ -220,7 +220,7 @@ describe('level-helper', function () {
     };
     const curDetails = {
       startCC: 1,
-      endCC: 1
+      endCC  : 1
     };
 
     const actual = shouldAlignOnDiscontinuities(lastFrag, lastLevel, curDetails);
@@ -233,7 +233,7 @@ describe('level-helper', function () {
     };
     const curDetails = {
       startCC: 1,
-      endCC: 1
+      endCC  : 1
     };
     const lastFrag = {
       cc: 1
@@ -246,7 +246,7 @@ describe('level-helper', function () {
   it('should not align when there is no previous level', function () {
     const curDetails = {
       startCC: 1,
-      endCC: 1
+      endCC  : 1
     };
     const lastFrag = {
       cc: 1
@@ -261,7 +261,7 @@ describe('level-helper', function () {
     };
     const curDetails = {
       startCC: 1,
-      endCC: 1
+      endCC  : 1
     };
     const lastFrag = {
       cc: 1

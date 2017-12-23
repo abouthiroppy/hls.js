@@ -29,8 +29,8 @@ import { ErrorTypes, ErrorDetails } from '../errors';
 const RemuxerTrackIdConfig = {
   video: 0,
   audio: 1,
-  id3: 2,
-  text: 3
+  id3  : 2,
+  text : 3
 };
 
 class TSDemuxer {
@@ -65,7 +65,7 @@ class TSDemuxer {
 
   static _syncOffset(data) {
     // scan 1000 first bytes
-    const scanwindow  = Math.min(1000,data.length - 3*188);
+    const scanwindow  = Math.min(1000, data.length - 3*188);
     let i = 0;
     while(i < scanwindow) {
       // a TS fragment should contain at least 3 TS packets, a PAT, a PMT, and one PID, each starting with 0x47
@@ -87,17 +87,17 @@ class TSDemuxer {
    */
   static createTrack(type, duration) {
     return {
-      container: type === 'video' || type === 'audio' ? 'video/mp2t' : undefined,
+      container     : type === 'video' || type === 'audio' ? 'video/mp2t' : undefined,
       type,
-      id: RemuxerTrackIdConfig[type],
-      pid: -1,
+      id            : RemuxerTrackIdConfig[type],
+      pid           : -1,
       inputTimeScale: 90000,
       sequenceNumber: 0,
-      samples: [],
-      len: 0,
-      dropped: type === 'video' ? 0 : undefined,
-      isAAC: type === 'audio' ? true : undefined,
-      duration: type === 'audio' ? duration : undefined
+      samples       : [],
+      len           : 0,
+      dropped       : type === 'video' ? 0 : undefined,
+      isAAC         : type === 'audio' ? true : undefined,
+      duration      : type === 'audio' ? duration : undefined
     };
   }
 
@@ -136,8 +136,8 @@ class TSDemuxer {
   resetTimeStamp() {}
 
   // feed incoming data to the front of the parsing pipeline
-  append(data, timeOffset, contiguous,accurateTimeOffset) {
-    let start, len = data.length, stt, pid, atf, offset,pes,
+  append(data, timeOffset, contiguous, accurateTimeOffset) {
+    let start, len = data.length, stt, pid, atf, offset, pes,
       unknownPIDs = false;
     this.contiguous = contiguous;
     let pmtParsed = this.pmtParsed,
@@ -185,7 +185,7 @@ class TSDemuxer {
         case avcId:
           if (stt) {
             if (avcData && (pes = parsePES(avcData)))
-              parseAVCPES(pes,false);
+              parseAVCPES(pes, false);
 
             avcData = { data: [], size: 0 };
           }
@@ -274,7 +274,7 @@ class TSDemuxer {
     }
     // try to parse last PES packets
     if (avcData && (pes = parsePES(avcData))) {
-      parseAVCPES(pes,true);
+      parseAVCPES(pes, true);
       avcTrack.pesData = null;
     } else {
       // either avcData null or PES truncated, keep it for next frag parsing
@@ -437,7 +437,7 @@ class TSDemuxer {
       newData.set(data[0]);
       newData.set(data[1], data[0].length);
       data[0] = newData;
-      data.splice(1,1);
+      data.splice(1, 1);
     }
     //retrieve PTS/DTS from first fragment
     frag = data[0];
@@ -518,7 +518,7 @@ class TSDemuxer {
     }
   }
 
-  pushAccesUnit(avcSample,avcTrack) {
+  pushAccesUnit(avcSample, avcTrack) {
     if (avcSample.units.length && avcSample.frame) {
       const samples = avcTrack.samples;
       const nbSamples = samples.length;
@@ -541,7 +541,7 @@ class TSDemuxer {
 
   }
 
-  _parseAVCPES(pes,last) {
+  _parseAVCPES(pes, last) {
     //logger.log('parse new PES');
     let track = this._avcTrack,
       units = this._parseAVCNALu(pes.data),
@@ -552,7 +552,7 @@ class TSDemuxer {
       spsfound = false,
       i,
       pushAccesUnit = this.pushAccesUnit.bind(this),
-      createAVCSample = function(key,pts,dts,debug) {
+      createAVCSample = function(key, pts, dts, debug) {
         return { key: key, pts: pts, dts: dts, units: [], debug: debug };
       };
     //free pes.data to save up some memory
@@ -561,8 +561,8 @@ class TSDemuxer {
     // if new NAL units found and last sample still there, let's push ...
     // this helps parsing streams with missing AUD (only do this if AUD never found)
     if (avcSample && units.length && !track.audFound) {
-      pushAccesUnit(avcSample,track);
-      avcSample = this.avcSample = createAVCSample(false,pes.pts,pes.dts,'');
+      pushAccesUnit(avcSample, track);
+      avcSample = this.avcSample = createAVCSample(false, pes.pts, pes.dts, '');
     }
 
     units.forEach(unit => {
@@ -571,7 +571,7 @@ class TSDemuxer {
       case 1:
         push = true;
         if (!avcSample)
-          avcSample = this.avcSample = createAVCSample(true,pes.pts,pes.dts,'');
+          avcSample = this.avcSample = createAVCSample(true, pes.pts, pes.dts, '');
 
         if(debug)
           avcSample.debug += 'NDR ';
@@ -597,7 +597,7 @@ class TSDemuxer {
         push = true;
         // handle PES not starting with AUD
         if (!avcSample)
-          avcSample = this.avcSample = createAVCSample(true,pes.pts,pes.dts,'');
+          avcSample = this.avcSample = createAVCSample(true, pes.pts, pes.dts, '');
 
         if(debug)
           avcSample.debug += 'IDR ';
@@ -721,9 +721,9 @@ class TSDemuxer {
         push = false;
         track.audFound = true;
         if (avcSample)
-          pushAccesUnit(avcSample,track);
+          pushAccesUnit(avcSample, track);
 
-        avcSample = this.avcSample = createAVCSample(false,pes.pts,pes.dts,debug ? 'AUD ': '');
+        avcSample = this.avcSample = createAVCSample(false, pes.pts, pes.dts, debug ? 'AUD ': '');
         break;
         // Filler Data
       case 12:
@@ -743,7 +743,7 @@ class TSDemuxer {
     });
     // if last PES packet, push samples
     if (last && avcSample) {
-      pushAccesUnit(avcSample,track);
+      pushAccesUnit(avcSample, track);
       this.avcSample = null;
     }
   }
@@ -826,7 +826,7 @@ class TSDemuxer {
               // check if lastUnit had a state different from zero
               if (lastUnit.state) {
                 // strip last bytes
-                lastUnit.data = lastUnit.data.subarray(0,lastUnit.data.byteLength - lastState);
+                lastUnit.data = lastUnit.data.subarray(0, lastUnit.data.byteLength - lastState);
               }
             }
             // If NAL units are not starting right at the beginning of the PES packet, push preceding data into previous NAL unit.

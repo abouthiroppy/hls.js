@@ -4,7 +4,7 @@
 
 import { logger } from '../utils/logger';
 
-export function updatePTS(fragments,fromIdx, toIdx) {
+export function updatePTS(fragments, fromIdx, toIdx) {
   let fragFrom = fragments[fromIdx], fragTo = fragments[toIdx], fragToPTS = fragTo.startPTS;
   // if we know startPTS[toIdx]
   if (!isNaN(fragToPTS)) {
@@ -31,7 +31,7 @@ export function updatePTS(fragments,fromIdx, toIdx) {
   }
 }
 
-export function updateFragPTSDTS(details,frag,startPTS,endPTS,startDTS,endDTS) {
+export function updateFragPTSDTS(details, frag, startPTS, endPTS, startDTS, endDTS) {
   // update frag PTS/DTS
   let maxStartPTS = startPTS;
   if (!isNaN(frag.startPTS)) {
@@ -42,7 +42,7 @@ export function updateFragPTSDTS(details,frag,startPTS,endPTS,startDTS,endDTS) {
     else
       frag.deltaPTS = Math.max(deltaPTS, frag.deltaPTS);
 
-    maxStartPTS = Math.max(startPTS,frag.startPTS);
+    maxStartPTS = Math.max(startPTS, frag.startPTS);
     startPTS = Math.min(startPTS, frag.startPTS);
     endPTS = Math.max(endPTS, frag.endPTS);
     startDTS = Math.min(startDTS, frag.startDTS);
@@ -86,9 +86,9 @@ export function updateFragPTSDTS(details,frag,startPTS,endPTS,startDTS,endDTS) {
   return drift;
 }
 
-export function mergeDetails(oldDetails,newDetails) {
-  let start = Math.max(oldDetails.startSN,newDetails.startSN)-newDetails.startSN,
-    end = Math.min(oldDetails.endSN,newDetails.endSN)-newDetails.startSN,
+export function mergeDetails(oldDetails, newDetails) {
+  let start = Math.max(oldDetails.startSN, newDetails.startSN)-newDetails.startSN,
+    end = Math.min(oldDetails.endSN, newDetails.endSN)-newDetails.startSN,
     delta = newDetails.startSN - oldDetails.startSN,
     oldfragments = oldDetails.fragments,
     newfragments = newDetails.fragments,
@@ -126,7 +126,7 @@ export function mergeDetails(oldDetails,newDetails) {
 
   // if at least one fragment contains PTS info, recompute PTS information for all fragments
   if(PTSFrag) {
-    updateFragPTSDTS(newDetails,PTSFrag,PTSFrag.startPTS,PTSFrag.endPTS,PTSFrag.startDTS,PTSFrag.endDTS);
+    updateFragPTSDTS(newDetails, PTSFrag, PTSFrag.startPTS, PTSFrag.endPTS, PTSFrag.startDTS, PTSFrag.endDTS);
   } else {
     // ensure that delta is within oldfragments range
     // also adjust sliding in case delta is 0 (we could have old=[50-60] and new=old=[50-61])

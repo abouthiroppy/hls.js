@@ -14,7 +14,7 @@ class EWMA {
     this.totalWeight_ = 0;
   }
 
-  sample(weight,value) {
+  sample(weight, value) {
     let adjAlpha = Math.pow(this.alpha_, weight);
     this.estimate_ = value * (1 - adjAlpha) + adjAlpha * this.estimate_;
     this.totalWeight_ += weight;

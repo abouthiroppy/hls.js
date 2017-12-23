@@ -165,9 +165,9 @@ let backgroundColors = ['white', 'green', 'blue', 'cyan', 'red', 'yellow', 'mage
  */
 let logger = {
   verboseFilter: { 'DATA': 3, 'DEBUG': 3, 'INFO': 2, 'WARNING': 2, 'TEXT': 1, 'ERROR': 0 },
-  time: null,
-  verboseLevel: 0, // Only write errors
-  setTime: function(newTime) {
+  time         : null,
+  verboseLevel : 0, // Only write errors
+  setTime      : function(newTime) {
     this.time = newTime;
   },
   log: function(severity, msg) {
@@ -249,7 +249,7 @@ class StyledUnicodeChar {
 
   constructor(uchar, foreground, underline, italics, background, flash) {
     this.uchar = uchar || ' '; // unicode character
-    this.penState = new PenState(foreground, underline,italics, background, flash);
+    this.penState = new PenState(foreground, underline, italics, background, flash);
   }
 
   reset() {

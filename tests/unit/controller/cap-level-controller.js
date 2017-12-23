@@ -4,23 +4,23 @@ import CapLevelController from '../../../src/controller/cap-level-controller';
 
 const levels = [
   {
-    width: 360,
-    height: 360,
+    width    : 360,
+    height   : 360,
     bandwidth: 1000
   },
   {
-    width: 540,
-    height: 540,
+    width    : 540,
+    height   : 540,
     bandwidth: 2000,
   },
   {
-    width: 540,
-    height: 540,
+    width    : 540,
+    height   : 540,
     bandwidth: 3000,
   },
   {
-    width: 720,
-    height: 720,
+    width    : 720,
+    height   : 720,
     bandwidth: 4000
   }
 ];

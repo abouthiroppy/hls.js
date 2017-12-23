@@ -9,42 +9,42 @@ const UINT32_MAX = Math.pow(2, 32) - 1;
 class MP4 {
   static init() {
     MP4.types = {
-      avc1: [], // codingname
-      avcC: [],
-      btrt: [],
-      dinf: [],
-      dref: [],
-      esds: [],
-      ftyp: [],
-      hdlr: [],
-      mdat: [],
-      mdhd: [],
-      mdia: [],
-      mfhd: [],
-      minf: [],
-      moof: [],
-      moov: [],
-      mp4a: [],
+      avc1  : [], // codingname
+      avcC  : [],
+      btrt  : [],
+      dinf  : [],
+      dref  : [],
+      esds  : [],
+      ftyp  : [],
+      hdlr  : [],
+      mdat  : [],
+      mdhd  : [],
+      mdia  : [],
+      mfhd  : [],
+      minf  : [],
+      moof  : [],
+      moov  : [],
+      mp4a  : [],
       '.mp3': [],
-      mvex: [],
-      mvhd: [],
-      pasp: [],
-      sdtp: [],
-      stbl: [],
-      stco: [],
-      stsc: [],
-      stsd: [],
-      stsz: [],
-      stts: [],
-      tfdt: [],
-      tfhd: [],
-      traf: [],
-      trak: [],
-      trun: [],
-      trex: [],
-      tkhd: [],
-      vmhd: [],
-      smhd: []
+      mvex  : [],
+      mvhd  : [],
+      pasp  : [],
+      sdtp  : [],
+      stbl  : [],
+      stco  : [],
+      stsc  : [],
+      stsd  : [],
+      stsz  : [],
+      stts  : [],
+      tfdt  : [],
+      tfhd  : [],
+      traf  : [],
+      trak  : [],
+      trun  : [],
+      trex  : [],
+      tkhd  : [],
+      vmhd  : [],
+      smhd  : []
     };
 
     let i;
@@ -134,8 +134,8 @@ class MP4 {
       0x00, 0x00, 0x00, // flags
       0x00, 0x00, 0x00, 0x01]);// entry_count
 
-    let majorBrand = new Uint8Array([105,115,111,109]); // isom
-    let avc1Brand = new Uint8Array([97,118,99,49]); // avc1
+    let majorBrand = new Uint8Array([105, 115, 111, 109]); // isom
+    let avc1Brand = new Uint8Array([97, 118, 99, 49]); // avc1
     let minorVersion = new Uint8Array([0, 0, 0, 1]);
 
     MP4.FTYP = MP4.box(MP4.types.ftyp, majorBrand, minorVersion, majorBrand, avc1Brand);
@@ -226,7 +226,7 @@ class MP4 {
   }
 
   static moof(sn, baseMediaDecodeTime, track) {
-    return MP4.box(MP4.types.moof, MP4.mfhd(sn), MP4.traf(track,baseMediaDecodeTime));
+    return MP4.box(MP4.types.moof, MP4.mfhd(sn), MP4.traf(track, baseMediaDecodeTime));
   }
   /**
  * @param tracks... (optional) {array} the tracks associated with this movie
@@ -254,7 +254,7 @@ class MP4 {
     return MP4.box.apply(null, [MP4.types.mvex].concat(boxes));
   }
 
-  static mvhd(timescale,duration) {
+  static mvhd(timescale, duration) {
     duration*=timescale;
     const upperWordDuration = Math.floor(duration / (UINT32_MAX + 1));
     const lowerWordDuration = Math.floor(duration % (UINT32_MAX + 1));
@@ -520,7 +520,7 @@ class MP4 {
     ]));
   }
 
-  static traf(track,baseMediaDecodeTime) {
+  static traf(track, baseMediaDecodeTime) {
     let sampleDependencyTable = MP4.sdtp(track),
       id = track.id,
       upperWordBaseMediaDecodeTime = Math.floor(baseMediaDecodeTime / (UINT32_MAX + 1)),
@@ -588,7 +588,7 @@ class MP4 {
       len = samples.length,
       arraylen = 12 + (16 * len),
       array = new Uint8Array(arraylen),
-      i,sample,duration,size,flags,cts;
+      i, sample, duration, size, flags, cts;
     offset += 8 + arraylen;
     array.set([
       0x00, // version 0
@@ -601,7 +601,7 @@ class MP4 {
       (offset >>> 16) & 0xFF,
       (offset >>> 8) & 0xFF,
       offset & 0xFF // data_offset
-    ],0);
+    ], 0);
     for (i = 0; i < len; i++) {
       sample = samples[i];
       duration = sample.duration;
@@ -628,7 +628,7 @@ class MP4 {
         (cts >>> 16) & 0xFF,
         (cts >>> 8) & 0xFF,
         cts & 0xFF // sample_composition_time_offset
-      ],12+16*i);
+      ], 12+16*i);
     }
     return MP4.box(MP4.types.trun, array);
   }

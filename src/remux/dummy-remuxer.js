@@ -17,11 +17,11 @@ class DummyRemuxer {
   resetTimeStamp() {
   }
 
-  remux(audioTrack,videoTrack,id3Track,textTrack,timeOffset) {
-    this._remuxAACSamples(audioTrack,timeOffset);
-    this._remuxAVCSamples(videoTrack,timeOffset);
-    this._remuxID3Samples(id3Track,timeOffset);
-    this._remuxTextSamples(textTrack,timeOffset);
+  remux(audioTrack, videoTrack, id3Track, textTrack, timeOffset) {
+    this._remuxAACSamples(audioTrack, timeOffset);
+    this._remuxAVCSamples(videoTrack, timeOffset);
+    this._remuxID3Samples(id3Track, timeOffset);
+    this._remuxTextSamples(textTrack, timeOffset);
   }
 
   _remuxAVCSamples(track, timeOffset) {
@@ -38,8 +38,8 @@ class DummyRemuxer {
     timeOffset = timeOffset;
   }
 
-  _remuxAACSamples(track,timeOffset) {
-    let aacSample,unit;
+  _remuxAACSamples(track, timeOffset) {
+    let aacSample, unit;
     // loop through track.samples
     while (track.samples.length) {
       aacSample = track.samples.shift();
@@ -49,8 +49,8 @@ class DummyRemuxer {
     timeOffset = timeOffset;
   }
 
-  _remuxID3Samples(track,timeOffset) {
-    let id3Sample,unit;
+  _remuxID3Samples(track, timeOffset) {
+    let id3Sample, unit;
     // loop through track.samples
     while (track.samples.length) {
       id3Sample = track.samples.shift();
@@ -60,8 +60,8 @@ class DummyRemuxer {
     timeOffset = timeOffset;
   }
 
-  _remuxTextSamples(track,timeOffset) {
-    let textSample,bytes;
+  _remuxTextSamples(track, timeOffset) {
+    let textSample, bytes;
     // loop through track.samples
     while (track.samples.length) {
       textSample = track.samples.shift();
