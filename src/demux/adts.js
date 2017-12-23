@@ -5,7 +5,7 @@ import { logger } from '../utils/logger';
 import { ErrorTypes, ErrorDetails } from '../errors';
 
 export function getAudioConfig(observer, data, offset, audioCodec) {
-  var adtsObjectType, // :int
+  let adtsObjectType, // :int
     adtsSampleingIndex, // :int
     adtsExtensionSampleingIndex, // :int
     adtsChanelConfig, // :int
@@ -146,9 +146,9 @@ export function isHeader(data, offset) {
   // Look for ADTS header | 1111 1111 | 1111 X00X | where X can be either 0 or 1
   // Layer bits (position 14 and 15) in header should be always 0 for ADTS
   // More info https://wiki.multimedia.cx/index.php?title=ADTS
-  if (offset + 1 < data.length && isHeaderPattern(data, offset)) {
+  if (offset + 1 < data.length && isHeaderPattern(data, offset))
     return true;
-  }
+
   return false;
 }
 
@@ -160,20 +160,20 @@ export function probe(data, offset) {
     let headerLength = getHeaderLength(data, offset);
     // ADTS frame Length
     let frameLength = headerLength;
-    if (offset + 5 < data.length) {
+    if (offset + 5 < data.length)
       frameLength = getFullFrameLength(data, offset);
-    }
+
     let newOffset = offset + frameLength;
-    if (newOffset === data.length || (newOffset + 1 < data.length && isHeaderPattern(data, newOffset))) {
+    if (newOffset === data.length || (newOffset + 1 < data.length && isHeaderPattern(data, newOffset)))
       return true;
-    }
+
   }
   return false;
 }
 
 export function initTrackConfig(track, observer, data, offset, audioCodec) {
   if (!track.samplerate) {
-    var config = getAudioConfig(observer, data, offset, audioCodec);
+    let config = getAudioConfig(observer, data, offset, audioCodec);
     track.config = config.config;
     track.samplerate = config.samplerate;
     track.channelCount = config.channelCount;
@@ -188,8 +188,8 @@ export function getFrameDuration(samplerate) {
 }
 
 export function parseFrameHeader(data, offset, pts, frameIndex, frameDuration) {
-  var headerLength, frameLength, stamp;
-  var length = data.length;
+  let headerLength, frameLength, stamp;
+  let length = data.length;
 
   // The protection skip bit tells us if we have 2 bytes of CRC data at the end of the ADTS header
   headerLength = getHeaderLength(data, offset);
@@ -207,15 +207,15 @@ export function parseFrameHeader(data, offset, pts, frameIndex, frameDuration) {
 }
 
 export function appendFrame(track, data, offset, pts, frameIndex) {
-  var frameDuration = getFrameDuration(track.samplerate);
-  var header = parseFrameHeader(data, offset, pts, frameIndex, frameDuration);
+  let frameDuration = getFrameDuration(track.samplerate);
+  let header = parseFrameHeader(data, offset, pts, frameIndex, frameDuration);
   if (header) {
-    var stamp = header.stamp;
-    var headerLength = header.headerLength;
-    var frameLength = header.frameLength;
+    let stamp = header.stamp;
+    let headerLength = header.headerLength;
+    let frameLength = header.frameLength;
 
     //logger.log(`AAC frame, offset/length/total/pts:${offset+headerLength}/${frameLength}/${data.byteLength}/${(stamp/90).toFixed(0)}`);
-    var aacSample = {
+    let aacSample = {
       unit: data.subarray(offset + headerLength, offset + headerLength + frameLength),
       pts: stamp,
       dts: stamp
@@ -224,7 +224,7 @@ export function appendFrame(track, data, offset, pts, frameIndex) {
     track.samples.push(aacSample);
     track.len += frameLength;
 
-    return {sample: aacSample, length: frameLength + headerLength};
+    return { sample: aacSample, length: frameLength + headerLength };
   }
 
   return undefined;

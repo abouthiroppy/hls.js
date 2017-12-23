@@ -5,6 +5,6 @@ export default class AESCrypto {
   }
 
   decrypt(data, key) {
-    return this.subtle.decrypt({name: 'AES-CBC', iv: this.aesIV}, key, data);
+    return this.subtle.decrypt({ name: 'AES-CBC', iv: this.aesIV }, key, data);
   }
 }

@@ -2,8 +2,8 @@ import AESCrypto from './aes-crypto';
 import FastAESKey from './fast-aes-key';
 import AESDecryptor from './aes-decryptor';
 
-import {ErrorTypes, ErrorDetails} from '../errors';
-import {logger} from '../utils/logger';
+import { ErrorTypes, ErrorDetails } from '../errors';
+import { logger } from '../utils/logger';
 
 /*globals self: false */
 
@@ -30,13 +30,12 @@ class Decrypter {
         this.logEnabled = false;
       }
       let decryptor = this.decryptor;
-      if (!decryptor) {
+      if (!decryptor)
         this.decryptor = decryptor = new AESDecryptor();
-      }
+
       decryptor.expandKey(key);
       callback(decryptor.decrypt(data, 0, iv));
-    }
-    else {
+    } else {
       if (this.logEnabled) {
         logger.log('WebCrypto AES decrypt');
         this.logEnabled = false;
@@ -52,12 +51,12 @@ class Decrypter {
           // decrypt using web crypto
           let crypto = new AESCrypto(subtle,iv);
           crypto.decrypt(data, aesKey).
-          catch ((err) => {
-            this.onWebCryptoError(err, data, key, iv, callback);
-          }).
-          then((result) => {
-            callback(result);
-          });
+            catch ((err) => {
+              this.onWebCryptoError(err, data, key, iv, callback);
+            }).
+            then((result) => {
+              callback(result);
+            });
         }).
         catch ((err) => {
           this.onWebCryptoError(err, data, key, iv, callback);
@@ -71,10 +70,9 @@ class Decrypter {
       this.disableWebCrypto = true;
       this.logEnabled = true;
       this.decrypt(data, key, iv, callback);
-    }
-    else {
+    } else {
       logger.error(`decrypting error : ${err.message}`);
-      this.observer.trigger(Event.ERROR, {type : ErrorTypes.MEDIA_ERROR, details : ErrorDetails.FRAG_DECRYPT_ERROR, fatal : true, reason : err.message});
+      this.observer.trigger(Event.ERROR, { type : ErrorTypes.MEDIA_ERROR, details : ErrorDetails.FRAG_DECRYPT_ERROR, fatal : true, reason : err.message });
     }
   }
 

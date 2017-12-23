@@ -11,7 +11,7 @@ describe('AttrList', () => {
     assert.deepEqual(new AttrList(undefined), {});
   });
   it('constructor() supports object argument', () => {
-    const obj = { VALUE: "42" };
+    const obj = { VALUE: '42' };
     const list = new AttrList(obj);
     assert.strictEqual(list.decimalInteger('VALUE'), 42);
     assert.strictEqual(Object.keys(list).length, 1);

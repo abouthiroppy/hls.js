@@ -10,9 +10,9 @@ class ID3TrackController extends EventHandler {
 
   constructor(hls) {
     super(hls,
-               Event.MEDIA_ATTACHED,
-               Event.MEDIA_DETACHING,
-               Event.FRAG_PARSING_METADATA);
+      Event.MEDIA_ATTACHED,
+      Event.MEDIA_DETACHING,
+      Event.FRAG_PARSING_METADATA);
     this.id3Track = undefined;
     this.media = undefined;
   }
@@ -24,9 +24,9 @@ class ID3TrackController extends EventHandler {
   // Add ID3 metatadata text track.
   onMediaAttached(data) {
     this.media = data.media;
-    if (!this.media) {
+    if (!this.media)
       return;
-    }
+
   }
 
   onMediaDetaching() {
@@ -55,9 +55,9 @@ class ID3TrackController extends EventHandler {
         let endTime = i < samples.length - 1 ? samples[i+1].pts : fragment.endPTS;
 
         // Give a slight bump to the endTime if it's equal to startTime to avoid a SyntaxError in IE
-        if (startTime === endTime) {
+        if (startTime === endTime)
           endTime += 0.0001;
-        }
+
 
         for(let j = 0; j < frames.length; j++) {
           const frame = frames[j];

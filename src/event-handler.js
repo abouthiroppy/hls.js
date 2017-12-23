@@ -4,8 +4,8 @@
 *
 */
 
-import {logger} from './utils/logger';
-import {ErrorTypes, ErrorDetails} from './errors';
+import { logger } from './utils/logger';
+import { ErrorTypes, ErrorDetails } from './errors';
 import Event from './events';
 
 class EventHandler {
@@ -30,9 +30,9 @@ class EventHandler {
   registerListeners() {
     if (this.isEventHandler()) {
       this.handledEvents.forEach(function(event) {
-        if (event === 'hlsEventGeneric') {
+        if (event === 'hlsEventGeneric')
           throw new Error('Forbidden event name: ' + event);
-        }
+
         this.hls.on(event, this.onEvent);
       }, this);
     }
@@ -54,18 +54,18 @@ class EventHandler {
   }
 
   onEventGeneric(event, data) {
-    var eventToFunction = function(event, data) {
-      var funcName = 'on' + event.replace('hls', '');
-      if (typeof this[funcName] !== 'function') {
+    let eventToFunction = function(event, data) {
+      let funcName = 'on' + event.replace('hls', '');
+      if (typeof this[funcName] !== 'function')
         throw new Error(`Event ${event} has no generic handler in this ${this.constructor.name} class (tried ${funcName})`);
-      }
+
       return this[funcName].bind(this, data);
     };
     try {
       eventToFunction.call(this, event, data).call();
     } catch (err) {
       logger.error(`internal error happened while processing ${event}:${err.message}`);
-      this.hls.trigger(Event.ERROR, {type: ErrorTypes.OTHER_ERROR, details: ErrorDetails.INTERNAL_EXCEPTION, fatal: false, event : event, err : err});
+      this.hls.trigger(Event.ERROR, { type: ErrorTypes.OTHER_ERROR, details: ErrorDetails.INTERNAL_EXCEPTION, fatal: false, event : event, err : err });
     }
   }
 }

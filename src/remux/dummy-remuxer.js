@@ -25,21 +25,21 @@ class DummyRemuxer {
   }
 
   _remuxAVCSamples(track, timeOffset) {
-    var avcSample, unit;
+    let avcSample, unit;
     // loop through track.samples
     while (track.samples.length) {
       avcSample = track.samples.shift();
       // loop through AVC sample NALUs
-      while (avcSample.units.length) {
+      while (avcSample.units.length)
         unit = avcSample.units.shift();
-      }
+
     }
     //please lint
     timeOffset = timeOffset;
   }
 
   _remuxAACSamples(track,timeOffset) {
-    var aacSample,unit;
+    let aacSample,unit;
     // loop through track.samples
     while (track.samples.length) {
       aacSample = track.samples.shift();
@@ -50,7 +50,7 @@ class DummyRemuxer {
   }
 
   _remuxID3Samples(track,timeOffset) {
-    var id3Sample,unit;
+    let id3Sample,unit;
     // loop through track.samples
     while (track.samples.length) {
       id3Sample = track.samples.shift();
@@ -61,7 +61,7 @@ class DummyRemuxer {
   }
 
   _remuxTextSamples(track,timeOffset) {
-    var textSample,bytes;
+    let textSample,bytes;
     // loop through track.samples
     while (track.samples.length) {
       textSample = track.samples.shift();

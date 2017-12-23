@@ -17,9 +17,9 @@ class AESDecryptor {
   uint8ArrayToUint32Array_(arrayBuffer) {
     let view = new DataView(arrayBuffer);
     let newArray = new Uint32Array(4);
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++)
       newArray[i] = view.getUint32(i * 4);
-    }
+
     return newArray;
   }
 
@@ -42,11 +42,11 @@ class AESDecryptor {
     let xi = 0;
     let i = 0;
     for (i = 0; i < 256; i++) {
-      if (i < 128) {
+      if (i < 128)
         d[i] = i << 1;
-      } else {
+      else
         d[i] = (i << 1) ^ 0x11b;
-      }
+
     }
 
     for (i = 0; i < 256; i++) {
@@ -95,16 +95,16 @@ class AESDecryptor {
       offset++;
     }
 
-    if (sameKey) {
+    if (sameKey)
       return;
-    }
+
 
     this.key = key;
     let keySize = this.keySize = key.length;
 
-    if (keySize !== 4 && keySize !== 6 && keySize !== 8) {
+    if (keySize !== 4 && keySize !== 6 && keySize !== 8)
       throw new Error('Invalid aes key size=' + keySize);
-    }
+
 
     let ksRows = this.ksRows = (keySize + 6 + 1) * 4;
     let ksRow;
@@ -150,17 +150,17 @@ class AESDecryptor {
 
     for (invKsRow = 0; invKsRow < ksRows; invKsRow++) {
       ksRow = ksRows - invKsRow;
-      if (invKsRow & 3) {
+      if (invKsRow & 3)
         t = keySchedule[ksRow];
-      } else {
+      else
         t = keySchedule[ksRow - 4];
-      }
 
-      if (invKsRow < 4 || ksRow <= 4) {
+
+      if (invKsRow < 4 || ksRow <= 4)
         invKeySchedule[invKsRow] = t;
-      } else {
+      else
         invKeySchedule[invKsRow] = invSubMix0[sbox[t >>> 24]] ^ invSubMix1[sbox[(t >>> 16) & 0xff]] ^ invSubMix2[sbox[(t >>> 8) & 0xff]] ^ invSubMix3[sbox[t & 0xff]];
-      }
+
 
       invKeySchedule[invKsRow] = invKeySchedule[invKsRow] >>> 0;
     }
@@ -195,7 +195,7 @@ class AESDecryptor {
     let s0, s1, s2, s3;
     let inputWords0, inputWords1, inputWords2, inputWords3;
 
-    var ksRow, i;
+    let ksRow, i;
     let swapWord = this.networkToHostOrderSwap;
 
     while (offset < inputInt32.length) {

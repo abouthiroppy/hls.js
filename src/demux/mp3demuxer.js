@@ -22,7 +22,7 @@ class MP3Demuxer {
 
   static probe(data) {
     // check if data contains ID3 timestamp and MPEG sync word
-    var offset, length;
+    let offset, length;
     let id3Data = ID3.getID3Data(data, 0);
     if (id3Data && ID3.getTimeStamp(id3Data) !== undefined) {
       // Look for MPEG header | 1111 1111 | 111X XYZX | where X can be either 0 or 1 and Y or Z should be 1
@@ -43,16 +43,16 @@ class MP3Demuxer {
     let id3Data = ID3.getID3Data(data, 0);
     let timestamp = ID3.getTimeStamp(id3Data);
     let pts = timestamp ? 90 * timestamp : timeOffset * 90000;
-    var offset = id3Data.length;
-    var length = data.length;
-    var frameIndex = 0, stamp = 0;
-    var track = this._audioTrack;
+    let offset = id3Data.length;
+    let length = data.length;
+    let frameIndex = 0, stamp = 0;
+    let track = this._audioTrack;
 
     let id3Samples = [{ pts: pts, dts: pts, data: id3Data }];
 
     while (offset < length) {
       if (MpegAudio.isHeader(data, offset)) {
-        var frame = MpegAudio.appendFrame(track, data, offset, pts, frameIndex);
+        let frame = MpegAudio.appendFrame(track, data, offset, pts, frameIndex);
         if (frame) {
           offset += frame.length;
           stamp = frame.sample.pts;

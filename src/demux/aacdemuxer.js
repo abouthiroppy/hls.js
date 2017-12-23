@@ -21,9 +21,9 @@ class AACDemuxer {
   }
 
   static probe(data) {
-    if (!data) {
+    if (!data)
       return false;
-    }
+
     // Check for the ADTS sync word
     // Look for ADTS header | 1111 1111 | 1111 X00X | where X can be either 0 or 1
     // Layer bits (position 14 and 15) in header should be always 0 for ADTS
@@ -56,7 +56,7 @@ class AACDemuxer {
     while (offset < length - 1) {
       if (ADTS.isHeader(data, offset) && (offset + 5) < length) {
         ADTS.initTrackConfig(track, this.observer, data, offset, track.manifestCodec);
-        var frame = ADTS.appendFrame(track, data, offset, pts, frameIndex);
+        let frame = ADTS.appendFrame(track, data, offset, pts, frameIndex);
         if (frame) {
           offset += frame.length;
           stamp = frame.sample.pts;

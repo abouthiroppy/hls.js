@@ -3,7 +3,7 @@
  */
 import URLToolkit from 'url-toolkit';
 import Event from './events';
-import {ErrorTypes, ErrorDetails} from './errors';
+import { ErrorTypes, ErrorDetails } from './errors';
 import PlaylistLoader from './loader/playlist-loader';
 import FragmentLoader from './loader/fragment-loader';
 import KeyLoader from './loader/key-loader';
@@ -12,10 +12,10 @@ import StreamController from  './controller/stream-controller';
 import LevelController from  './controller/level-controller';
 import ID3TrackController from './controller/id3-track-controller';
 
-import {isSupported} from './helper/is-supported';
-import {logger, enableLogs} from './utils/logger';
+import { isSupported } from './helper/is-supported';
+import { logger, enableLogs } from './utils/logger';
 import EventEmitter from 'events';
-import {hlsDefaultConfig} from './config';
+import { hlsDefaultConfig } from './config';
 
 export default class Hls {
   static get version() {
@@ -39,9 +39,9 @@ export default class Hls {
   }
 
   static get DefaultConfig() {
-    if(!Hls.defaultConfig) {
+    if(!Hls.defaultConfig)
       return hlsDefaultConfig;
-    }
+
     return Hls.defaultConfig;
   }
 
@@ -50,30 +50,30 @@ export default class Hls {
   }
 
   constructor(config = {}) {
-    var defaultConfig = Hls.DefaultConfig;
+    let defaultConfig = Hls.DefaultConfig;
 
-    if ((config.liveSyncDurationCount || config.liveMaxLatencyDurationCount) && (config.liveSyncDuration || config.liveMaxLatencyDuration)) {
+    if ((config.liveSyncDurationCount || config.liveMaxLatencyDurationCount) && (config.liveSyncDuration || config.liveMaxLatencyDuration))
       throw new Error('Illegal hls.js config: don\'t mix up liveSyncDurationCount/liveMaxLatencyDurationCount and liveSyncDuration/liveMaxLatencyDuration');
+
+
+    for (let prop in defaultConfig) {
+      if (prop in config)  continue;
+      config[prop] = defaultConfig[prop];
     }
 
-    for (var prop in defaultConfig) {
-        if (prop in config) { continue; }
-        config[prop] = defaultConfig[prop];
-    }
-
-    if (config.liveMaxLatencyDurationCount !== undefined && config.liveMaxLatencyDurationCount <= config.liveSyncDurationCount) {
+    if (config.liveMaxLatencyDurationCount !== undefined && config.liveMaxLatencyDurationCount <= config.liveSyncDurationCount)
       throw new Error('Illegal hls.js config: "liveMaxLatencyDurationCount" must be gt "liveSyncDurationCount"');
-    }
 
-    if (config.liveMaxLatencyDuration !== undefined && (config.liveMaxLatencyDuration <= config.liveSyncDuration || config.liveSyncDuration === undefined)) {
+
+    if (config.liveMaxLatencyDuration !== undefined && (config.liveMaxLatencyDuration <= config.liveSyncDuration || config.liveSyncDuration === undefined))
       throw new Error('Illegal hls.js config: "liveMaxLatencyDuration" must be gt "liveSyncDuration"');
-    }
+
 
     enableLogs(config.debug);
     this.config = config;
     this._autoLevelCapping = -1;
     // observer setup
-    var observer = this.observer = new EventEmitter();
+    let observer = this.observer = new EventEmitter();
     observer.trigger = function trigger (event, ...data) {
       observer.emit(event, event, ...data);
     };
@@ -102,12 +102,12 @@ export default class Hls {
 
     // optional audio stream controller
     let Controller = config.audioStreamController;
-    if (Controller) {
+    if (Controller)
       networkControllers.push(new Controller(this));
-    }
+
     this.networkControllers = networkControllers;
 
-    let coreComponents = [ playListLoader, fragmentLoader, keyLoader, abrController, bufferController, capLevelController, fpsController, id3TrackController ];
+    let coreComponents = [playListLoader, fragmentLoader, keyLoader, abrController, bufferController, capLevelController, fpsController, id3TrackController];
 
     // optional audio track and subtitle controller
     Controller = config.audioTrackController;
@@ -126,9 +126,9 @@ export default class Hls {
 
     // optional subtitle controller
     [config.subtitleStreamController, config.timelineController].forEach(Controller => {
-      if (Controller) {
+      if (Controller)
         coreComponents.push(new Controller(this));
-      }
+
     });
     this.coreComponents = coreComponents;
   }
@@ -137,7 +137,7 @@ export default class Hls {
     logger.log('destroy');
     this.trigger(Event.DESTROYING);
     this.detachMedia();
-    this.coreComponents.concat(this.networkControllers).forEach(component => {component.destroy();});
+    this.coreComponents.concat(this.networkControllers).forEach(component => { component.destroy(); });
     this.url = null;
     this.observer.removeAllListeners();
     this._autoLevelCapping = -1;
@@ -146,7 +146,7 @@ export default class Hls {
   attachMedia(media) {
     logger.log('attachMedia');
     this.media = media;
-    this.trigger(Event.MEDIA_ATTACHING, {media: media});
+    this.trigger(Event.MEDIA_ATTACHING, { media: media });
   }
 
   detachMedia() {
@@ -160,17 +160,17 @@ export default class Hls {
     logger.log(`loadSource:${url}`);
     this.url = url;
     // when attaching to a source URL, trigger a playlist load
-    this.trigger(Event.MANIFEST_LOADING, {url: url});
+    this.trigger(Event.MANIFEST_LOADING, { url: url });
   }
 
   startLoad(startPosition=-1) {
     logger.log(`startLoad(${startPosition})`);
-    this.networkControllers.forEach(controller => {controller.startLoad(startPosition);});
+    this.networkControllers.forEach(controller => { controller.startLoad(startPosition); });
   }
 
   stopLoad() {
     logger.log('stopLoad');
-    this.networkControllers.forEach(controller => {controller.stopLoad();});
+    this.networkControllers.forEach(controller => { controller.stopLoad(); });
   }
 
   swapAudioCodec() {
@@ -180,7 +180,7 @@ export default class Hls {
 
   recoverMediaError() {
     logger.log('recoverMediaError');
-    var media = this.media;
+    let media = this.media;
     this.detachMedia();
     this.attachMedia(media);
   }
@@ -264,9 +264,9 @@ export default class Hls {
     logger.log(`set startLevel:${newLevel}`);
     const hls = this;
     // if not in automatic start level detection, ensure startLevel is greater than minAutoLevel
-    if (newLevel !== -1) {
+    if (newLevel !== -1)
       newLevel = Math.max(newLevel,hls.minAutoLevel);
-    }
+
     hls.levelController.startLevel = newLevel;
   }
 
@@ -296,9 +296,9 @@ export default class Hls {
     let hls = this, levels = hls.levels, minAutoBitrate = hls.config.minAutoBitrate, len = levels ? levels.length : 0;
     for (let i = 0; i < len; i++) {
       const levelNextBitrate = levels[i].realBitrate ? Math.max(levels[i].realBitrate,levels[i].bitrate) : levels[i].bitrate;
-      if (levelNextBitrate > minAutoBitrate) {
+      if (levelNextBitrate > minAutoBitrate)
         return i;
-      }
+
     }
     return 0;
   }
@@ -309,11 +309,11 @@ export default class Hls {
     const levels = hls.levels;
     const autoLevelCapping = hls.autoLevelCapping;
     let maxAutoLevel;
-    if (autoLevelCapping=== -1 && levels && levels.length) {
+    if (autoLevelCapping=== -1 && levels && levels.length)
       maxAutoLevel = levels.length - 1;
-    } else {
+    else
       maxAutoLevel = autoLevelCapping;
-    }
+
     return maxAutoLevel;
   }
 
@@ -347,9 +347,9 @@ export default class Hls {
   /** select an audio track, based on its index in audio track lists**/
   set audioTrack(audioTrackId) {
     const audioTrackController = this.audioTrackController;
-    if (audioTrackController) {
+    if (audioTrackController)
       audioTrackController.audioTrack = audioTrackId;
-    }
+
   }
 
   get liveSyncPosition() {
@@ -371,9 +371,9 @@ export default class Hls {
   /** select an subtitle track, based on its index in subtitle track lists**/
   set subtitleTrack(subtitleTrackId) {
     const subtitleTrackController = this.subtitleTrackController;
-    if (subtitleTrackController) {
+    if (subtitleTrackController)
       subtitleTrackController.subtitleTrack = subtitleTrackId;
-    }
+
   }
 
   get subtitleDisplay() {
@@ -383,8 +383,8 @@ export default class Hls {
 
   set subtitleDisplay(value) {
     const subtitleTrackController = this.subtitleTrackController;
-    if (subtitleTrackController) {
+    if (subtitleTrackController)
       subtitleTrackController.subtitleDisplay = value;
-    }
+
   }
 }

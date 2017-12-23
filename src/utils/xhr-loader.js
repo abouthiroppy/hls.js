@@ -2,14 +2,14 @@
  * XHR based logger
 */
 
-import {logger} from '../utils/logger';
+import { logger } from '../utils/logger';
 
 class XhrLoader {
 
   constructor(config) {
-    if (config && config.xhrSetup) {
+    if (config && config.xhrSetup)
       this.xhrSetup = config.xhrSetup;
-    }
+
   }
 
   destroy() {
@@ -18,7 +18,7 @@ class XhrLoader {
   }
 
   abort() {
-    var loader = this.loader;
+    let loader = this.loader;
     if (loader && loader.readyState !== 4) {
       this.stats.aborted = true;
       loader.abort();
@@ -34,15 +34,15 @@ class XhrLoader {
     this.context = context;
     this.config = config;
     this.callbacks = callbacks;
-    this.stats = {trequest: performance.now(), retry: 0};
+    this.stats = { trequest: performance.now(), retry: 0 };
     this.retryDelay = config.retryDelay;
     this.loadInternal();
   }
 
   loadInternal() {
-    var xhr, context = this.context;
+    let xhr, context = this.context;
     xhr = this.loader = new XMLHttpRequest();
-    
+
     let stats = this.stats;
     stats.tfirst = 0;
     stats.loaded = 0;
@@ -59,18 +59,18 @@ class XhrLoader {
           xhrSetup(xhr, context.url);
         }
       }
-      if (!xhr.readyState) {
+      if (!xhr.readyState)
         xhr.open('GET', context.url, true);
-      }
+
     } catch (e) {
       // IE11 throws an exception on xhr.open if attempting to access an HTTP resource over HTTPS
       this.callbacks.onError({ code : xhr.status, text: e.message }, context, xhr);
       return;
     }
 
-    if (context.rangeEnd) {
+    if (context.rangeEnd)
       xhr.setRequestHeader('Range','bytes=' + context.rangeStart + '-' + (context.rangeEnd-1));
-    }
+
     xhr.onreadystatechange = this.readystatechange.bind(this);
     xhr.onprogress = this.loadprogress.bind(this);
     xhr.responseType = context.responseType;
@@ -81,24 +81,24 @@ class XhrLoader {
   }
 
   readystatechange(event) {
-    var xhr = event.currentTarget,
-        readyState = xhr.readyState,
-        stats = this.stats,
-        context = this.context,
-        config = this.config;
+    let xhr = event.currentTarget,
+      readyState = xhr.readyState,
+      stats = this.stats,
+      context = this.context,
+      config = this.config;
 
     // don't proceed if xhr has been aborted
-    if (stats.aborted) {
+    if (stats.aborted)
       return;
-    }
+
 
     // >= HEADERS_RECEIVED
     if (readyState >=2) {
       // clear xhr timeout and rearm it if readyState less than 4
       window.clearTimeout(this.requestTimeout);
-      if (stats.tfirst === 0) {
+      if (stats.tfirst === 0)
         stats.tfirst = Math.max(performance.now(), stats.trequest);
-      }
+
       if (readyState === 4) {
         let status = xhr.status;
         // http status between 200 to 299 are all successful
@@ -116,10 +116,10 @@ class XhrLoader {
           let response = { url : xhr.responseURL, data : data };
           this.callbacks.onSuccess(response, stats, context, xhr);
         } else {
-            // if max nb of retries reached or if http status between 400 and 499 (such error cannot be recovered, retrying is useless), return error
+          // if max nb of retries reached or if http status between 400 and 499 (such error cannot be recovered, retrying is useless), return error
           if (stats.retry >= config.maxRetry || (status >= 400 && status < 499)) {
             logger.error(`${status} while loading ${context.url}` );
-            this.callbacks.onError({ code : status, text : xhr.statusText}, context, xhr);
+            this.callbacks.onError({ code : status, text : xhr.statusText }, context, xhr);
           } else {
             // retry
             logger.warn(`${status} while loading ${context.url}, retrying in ${this.retryDelay}...`);
@@ -145,13 +145,13 @@ class XhrLoader {
   }
 
   loadprogress(event) {
-    var xhr = event.currentTarget,
-        stats = this.stats;
+    let xhr = event.currentTarget,
+      stats = this.stats;
 
     stats.loaded = event.loaded;
-    if (event.lengthComputable) {
+    if (event.lengthComputable)
       stats.total = event.total;
-    }
+
     let onProgress = this.callbacks.onProgress;
     if (onProgress) {
       // third arg is to provide on progress data

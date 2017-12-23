@@ -2,7 +2,7 @@
  * Parser for exponential Golomb codes, a variable-bitwidth number encoding scheme used by h264.
 */
 
-import {logger} from '../utils/logger';
+import { logger } from '../utils/logger';
 
 class ExpGolomb {
 
@@ -18,15 +18,15 @@ class ExpGolomb {
 
   // ():void
   loadWord() {
-    var
+    let
       data = this.data,
       bytesAvailable = this.bytesAvailable,
       position = data.byteLength - bytesAvailable,
       workingBytes = new Uint8Array(4),
       availableBytes = Math.min(4, bytesAvailable);
-    if (availableBytes === 0) {
+    if (availableBytes === 0)
       throw new Error('no bytes available');
-    }
+
     workingBytes.set(data.subarray(position, position + availableBytes));
     this.word = new DataView(workingBytes.buffer).getUint32(0);
     // track the amount of this.data that has been processed
@@ -36,7 +36,7 @@ class ExpGolomb {
 
   // (count:int):void
   skipBits(count) {
-    var skipBytes; // :int
+    let skipBytes; // :int
     if (this.bitsAvailable > count) {
       this.word <<= count;
       this.bitsAvailable -= count;
@@ -53,29 +53,29 @@ class ExpGolomb {
 
   // (size:int):uint
   readBits(size) {
-    var
+    let
       bits = Math.min(this.bitsAvailable, size), // :uint
       valu = this.word >>> (32 - bits); // :uint
-    if (size > 32) {
+    if (size > 32)
       logger.error('Cannot read more than 32 bits at a time');
-    }
+
     this.bitsAvailable -= bits;
-    if (this.bitsAvailable > 0) {
+    if (this.bitsAvailable > 0)
       this.word <<= bits;
-    } else if (this.bytesAvailable > 0) {
+    else if (this.bytesAvailable > 0)
       this.loadWord();
-    }
+
     bits = size - bits;
-    if (bits > 0 && this.bitsAvailable) {
+    if (bits > 0 && this.bitsAvailable)
       return valu << bits | this.readBits(bits);
-    } else {
+    else
       return valu;
-    }
+
   }
 
   // ():uint
   skipLZ() {
-    var leadingZeroCount; // :uint
+    let leadingZeroCount; // :uint
     for (leadingZeroCount = 0; leadingZeroCount < this.bitsAvailable; ++leadingZeroCount) {
       if (0 !== (this.word & (0x80000000 >>> leadingZeroCount))) {
         // the first bit of working word is 1
@@ -101,13 +101,13 @@ class ExpGolomb {
 
   // ():uint
   readUEG() {
-    var clz = this.skipLZ(); // :uint
+    let clz = this.skipLZ(); // :uint
     return this.readBits(clz + 1) - 1;
   }
 
   // ():int
   readEG() {
-    var valu = this.readUEG(); // :int
+    let valu = this.readUEG(); // :int
     if (0x01 & valu) {
       // the number is odd if the low order bit is set
       return (1 + valu) >>> 1; // add 1 to make it even, and divide by 2
@@ -131,7 +131,7 @@ class ExpGolomb {
   readUShort() {
     return this.readBits(16);
   }
-    // ():int
+  // ():int
   readUInt() {
     return this.readBits(32);
   }
@@ -144,7 +144,7 @@ class ExpGolomb {
    * @see Recommendation ITU-T H.264, Section 7.3.2.1.1.1
    */
   skipScalingList(count) {
-    var
+    let
       lastScale = 8,
       nextScale = 8,
       j,
@@ -168,7 +168,7 @@ class ExpGolomb {
    * associated video frames.
    */
   readSPS() {
-    var
+    let
       frameCropLeftOffset = 0,
       frameCropRightOffset = 0,
       frameCropTopOffset = 0,
@@ -204,10 +204,10 @@ class ExpGolomb {
         profileIdc === 86  ||
         profileIdc === 118 ||
         profileIdc === 128) {
-      var chromaFormatIdc = readUEG();
-      if (chromaFormatIdc === 3) {
+      let chromaFormatIdc = readUEG();
+      if (chromaFormatIdc === 3)
         skipBits(1); // separate_colour_plane_flag
-      }
+
       skipUEG(); // bit_depth_luma_minus8
       skipUEG(); // bit_depth_chroma_minus8
       skipBits(1); // qpprime_y_zero_transform_bypass_flag
@@ -215,17 +215,17 @@ class ExpGolomb {
         scalingListCount = (chromaFormatIdc !== 3) ? 8 : 12;
         for (i = 0; i < scalingListCount; i++) {
           if (readBoolean()) { // seq_scaling_list_present_flag[ i ]
-            if (i < 6) {
+            if (i < 6)
               skipScalingList(16);
-            } else {
+            else
               skipScalingList(64);
-            }
+
           }
         }
       }
     }
     skipUEG(); // log2_max_frame_num_minus4
-    var picOrderCntType = readUEG();
+    let picOrderCntType = readUEG();
     if (picOrderCntType === 0) {
       readUEG(); //log2_max_pic_order_cnt_lsb_minus4
     } else if (picOrderCntType === 1) {
@@ -233,18 +233,18 @@ class ExpGolomb {
       skipEG(); // offset_for_non_ref_pic
       skipEG(); // offset_for_top_to_bottom_field
       numRefFramesInPicOrderCntCycle = readUEG();
-      for(i = 0; i < numRefFramesInPicOrderCntCycle; i++) {
+      for(i = 0; i < numRefFramesInPicOrderCntCycle; i++)
         skipEG(); // offset_for_ref_frame[ i ]
-      }
+
     }
     skipUEG(); // max_num_ref_frames
     skipBits(1); // gaps_in_frame_num_value_allowed_flag
     picWidthInMbsMinus1 = readUEG();
     picHeightInMapUnitsMinus1 = readUEG();
     frameMbsOnlyFlag = readBits(1);
-    if (frameMbsOnlyFlag === 0) {
+    if (frameMbsOnlyFlag === 0)
       skipBits(1); // mb_adaptive_frame_field_flag
-    }
+
     skipBits(1); // direct_8x8_inference_flag
     if (readBoolean()) { // frame_cropping_flag
       frameCropLeftOffset = readUEG();
@@ -259,26 +259,26 @@ class ExpGolomb {
         // aspect_ratio_info_present_flag
         const aspectRatioIdc = readUByte();
         switch (aspectRatioIdc) {
-          case 1: pixelRatio = [1,1]; break;
-          case 2: pixelRatio = [12,11]; break;
-          case 3: pixelRatio = [10,11]; break;
-          case 4: pixelRatio = [16,11]; break;
-          case 5: pixelRatio = [40,33]; break;
-          case 6: pixelRatio = [24,11]; break;
-          case 7: pixelRatio = [20,11]; break;
-          case 8: pixelRatio = [32,11]; break;
-          case 9: pixelRatio = [80,33]; break;
-          case 10: pixelRatio = [18,11]; break;
-          case 11: pixelRatio = [15,11]; break;
-          case 12: pixelRatio = [64,33]; break;
-          case 13: pixelRatio = [160,99]; break;
-          case 14: pixelRatio = [4,3]; break;
-          case 15: pixelRatio = [3,2]; break;
-          case 16: pixelRatio = [2,1]; break;
-          case 255: {
-            pixelRatio = [readUByte() << 8 | readUByte(), readUByte() << 8 | readUByte()];
-            break;
-          }
+        case 1: pixelRatio = [1,1]; break;
+        case 2: pixelRatio = [12,11]; break;
+        case 3: pixelRatio = [10,11]; break;
+        case 4: pixelRatio = [16,11]; break;
+        case 5: pixelRatio = [40,33]; break;
+        case 6: pixelRatio = [24,11]; break;
+        case 7: pixelRatio = [20,11]; break;
+        case 8: pixelRatio = [32,11]; break;
+        case 9: pixelRatio = [80,33]; break;
+        case 10: pixelRatio = [18,11]; break;
+        case 11: pixelRatio = [15,11]; break;
+        case 12: pixelRatio = [64,33]; break;
+        case 13: pixelRatio = [160,99]; break;
+        case 14: pixelRatio = [4,3]; break;
+        case 15: pixelRatio = [3,2]; break;
+        case 16: pixelRatio = [2,1]; break;
+        case 255: {
+          pixelRatio = [readUByte() << 8 | readUByte(), readUByte() << 8 | readUByte()];
+          break;
+        }
         }
       }
     }
