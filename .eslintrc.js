@@ -28,6 +28,7 @@ module.exports = {
       "sourceType": "module"
   },
   "rules": {
+      // customizations of Node style-guide
       "indent": [
           "error",
           2
@@ -40,19 +41,16 @@ module.exports = {
           "error",
           "single"
       ],
-      "semi": [
-          "error",
-          "never"
-      ],
       "no-var": "error",
       "block-spacing": "error",
       "curly": ["error", "multi-or-nest", "consistent"],
       "object-curly-spacing": ["error", "always"],
       "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+      "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
+      "semi": ["error", "always"],
       // part of Node Style-guide but ignored
       "max-len": 0,
       "max-statements": 0,
-      "space-after-keywords": 0,
-      "semi": ["error", "always"]
+      "space-after-keywords": 0
   }
 };
