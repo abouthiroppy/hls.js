@@ -47,9 +47,14 @@ module.exports = {
       "comma-spacing": ["error", { "before": false, "after": true }],
       "curly": ["error", "multi-or-nest", "consistent"],
       "object-curly-spacing": ["error", "always"],
+      "object-curly-newline": ["error", {
+        "ObjectExpression": "always",
+        "ObjectPattern": { "multiline": false }
+      }],
       "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
       "key-spacing": ["error", { "beforeColon": false, "afterColon": true, "align": "colon" }],
       "semi": ["error", "always"],
+      "object-property-newline": ["error"],
       // part of Node Style-guide but ignored
       "max-len": 0,
       "max-statements": 0,
